@@ -6,6 +6,40 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+
+class SlotModel {
+  final String startTime;
+  final String endTime;
+  final String? patientname;
+  final String? patientMobile;
+
+  bool get isBooked => patientname != null;
+
+  SlotModel({
+    required this.startTime,
+    required this.endTime,
+    this.patientname,
+    this.patientMobile,
+  });
+
+
+  factory SlotModel.fromJson(Map<String, dynamic> json) {
+    return SlotModel(
+      startTime: json["startTime"],
+      endTime: json["endTime"],
+      patientname: json["patientname"],
+      patientMobile: json["patientMobile"]?.toString(),
+    );
+  }
+}
+
+
+ String formatDate(String date) {
+    final parsedDate = DateTime.tryParse(date);
+    if (parsedDate == null) return '';
+    return DateFormat('dd-MM-yyyy').format(parsedDate);
+  }
+
 class AdminPageProvider extends ChangeNotifier {
   List<Map<String, dynamic>> admindetails = [];
   List<Map<String, dynamic>> admindetailedprofile = [];
@@ -528,8 +562,8 @@ Future<void> addoutvisit(
   }
 
 
-String loginTime = "";
-  String logoutTime = "";
+String loginTime = '9:00';
+  String logoutTime = "17:00";
   int duration = 30;
   String doctorname = '';
 
@@ -539,7 +573,7 @@ String loginTime = "";
   List<SlotModel> finalSlots = [];
 
   /// ✅ 1. First load → fetch timing + booked today
-  Future<void> loadInitialData(String userid) async {
+  Future<void> loadInitialData(String userid, DateTime date) async {
     isLoading = true;
     // notifyListeners();
 
@@ -547,7 +581,7 @@ String loginTime = "";
 
 
     final res = await http.get(Uri.parse(
-        "${Constants.baseUrl}/api/v1/admin/gettdayschedule/$userid"),
+        "${Constants.baseUrl}/api/v1/admin/gettdayschedule/$userid?$date"),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${Constants.token}',
@@ -556,11 +590,18 @@ String loginTime = "";
         );
 
     final data = jsonDecode(res.body);
+    print(data);
+    doctorname = data["doctorName"];
 
-    loginTime = data["doctorTime"]["loginTime"];
+    if(data["doctorTime"] != null){
+       loginTime = data["doctorTime"]["loginTime"];
     logoutTime = data["doctorTime"]["leaveTime"];
     duration = data["doctorTime"]["duration"];
-    doctorname = data["doctorName"];
+    }else{
+      loginTime = '9:00';
+      logoutTime = '17:00';
+      duration = 30;
+    }
 
     bookedSlots = (data["slots"] as List)
         .map((e) => SlotModel.fromJson(e))
@@ -591,10 +632,23 @@ String loginTime = "";
         );
 
     final data = jsonDecode(res.body);
+    print(data);
+    
+     if(data["doctorTime"] != null){
+       loginTime = data["doctorTime"]["loginTime"];
+    logoutTime = data["doctorTime"]["leaveTime"];
+    duration = data["doctorTime"]["duration"];
+    }
+    else{
+      loginTime = '9:00';
+      logoutTime = "17:00";
+      duration = 30;
+    }
 
     bookedSlots = (data["slots"] as List)
         .map((e) => SlotModel.fromJson(e))
         .toList();
+
 
     generateSlots();
 
@@ -602,26 +656,74 @@ String loginTime = "";
     notifyListeners();
   }
 
-  /// ✅ Generate all slots from timings + merge booked
-  void generateSlots() {
-    finalSlots.clear();
+  // /// ✅ Generate all slots from timings + merge booked
+  // void generateSlots() {
+  //   finalSlots.clear();
 
-    DateTime start = DateTime.parse("2024-01-01 $loginTime:00");
-    DateTime end = DateTime.parse("2024-01-01 $logoutTime:00");
+  //   DateTime start = DateTime.parse("2024-01-01 $loginTime:00");
+  //   DateTime end = DateTime.parse("2024-01-01 $logoutTime:00");
 
-    while (start.isBefore(end)) {
-      final s = DateFormat("HH:mm").format(start);
-      final e = DateFormat("HH:mm").format(start.add(Duration(minutes: duration)));
+  //   while (start.isBefore(end)) {
+  //     final s = DateFormat("HH:mm").format(start);
+  //     final e = DateFormat("HH:mm").format(start.add(Duration(minutes: duration)));
 
-      SlotModel slot = bookedSlots.firstWhere(
-        (b) => b.startTime == s,
-        orElse: () => SlotModel(startTime: s, endTime: e),
-      );
+  //     SlotModel slot = bookedSlots.firstWhere(
+  //       (b) => b.startTime == s,
+  //       orElse: () => SlotModel(startTime: s, endTime: e),
+  //     );
 
-      finalSlots.add(slot);
-      start = start.add(Duration(minutes: duration));
+  //     finalSlots.add(slot);
+  //     start = start.add(Duration(minutes: duration));
+  //   }
+  // }
+
+bool isSlotBooked(DateTime slotStart, DateTime slotEnd, List<SlotModel> bookedSlots) {
+  for (final booked in bookedSlots) {
+    final bookedStart = DateFormat("HH:mm").parse(booked.startTime);
+    final bookedEnd = DateFormat("HH:mm").parse(booked.endTime);
+
+    // OVERLAP CONDITION
+    if (slotStart.isBefore(bookedEnd) && slotEnd.isAfter(bookedStart)) {
+      return true;
     }
   }
+  return false;
+}
+
+
+
+  void generateSlots() {
+  final List<SlotModel> all = [];
+
+  // Parse login + logout times
+  final start = DateFormat("HH:mm").parse(loginTime);
+  final end = DateFormat("HH:mm").parse(logoutTime);
+
+  DateTime current = start;
+
+  while (current.isBefore(end)) {
+    final next = current.add(Duration(minutes: duration));
+
+    if (!next.isAfter(end)) {
+      bool booked = isSlotBooked(current, next, bookedSlots);
+
+
+      all.add(
+        SlotModel(
+          startTime: DateFormat("HH:mm").format(current),
+          endTime: DateFormat("HH:mm").format(next),
+          patientname: booked ? "BOOKED" : null,
+        ),
+      );
+    }
+
+    current = next;
+  }
+
+  finalSlots = all;
+}
+
+
 
   /// ✅ Book Slot API
   Future<void> bookSlot(String userid,
@@ -773,32 +875,26 @@ final Map<String, dynamic> requestBody = {
     final error = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(error);
    }
-
-    // await http.delete(
-    //   Uri.parse(
-    //       "${Constants.baseUrl}/api/v1/admin/deleteslot"),
-    //       headers: <String, String>{
-    //       'Content-Type': 'application/json',
-    //       'Authorization': 'Bearer ${Constants.token}',
-    //     },
-
-    //   body: body,
-    // );     
+   
   }
  
 
- Future<void> updateDoctorTiming(String doctorId, String login, String logout, int duration, BuildContext context) async {
+ Future<void> updateDoctorTiming(String doctorId, String login, String logout, int duration, DateTime date, BuildContext context) async {
   Constants.token = await secureStorage.readSecureData('token') ?? '';
 
-
+print(date);
    try{
+
 
     
 final Map<String, dynamic> requestBody = {
         "loginTime": login,
     "leaveTime": logout,
     "duration": duration,
+    "date": formatDate(date.toString()),
       };
+
+      print(requestBody);
 
     final response = await http.put(
         Uri.parse("${Constants.baseUrl}/api/v1/admin/updatedoctortime/$doctorId"),
@@ -824,8 +920,9 @@ final Map<String, dynamic> requestBody = {
             ));
 
         ScaffoldMessenger.of(context).showSnackBar(sucessSnackbar);
-
-       loadInitialData(doctorId);
+        // loadInitialData(doctorId, date);
+        loadByDate(date, doctorId);
+       
  
   notifyListeners();
 
@@ -840,7 +937,7 @@ final Map<String, dynamic> requestBody = {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ));
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
-        Navigator.pop(context);
+        // Navigator.pop(context);
         addingoutvisit = false;
       }
     
@@ -848,12 +945,6 @@ final Map<String, dynamic> requestBody = {
     final error = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(error);
    }
-  
-
-  // Update local values too
-  // loginTime = login;
-  // logoutTime = logout;
-  // this.duration = duration;
 
   
 }
@@ -893,33 +984,5 @@ Future<void> gettodaysappointments() async {
   
   void notify() {
     notifyListeners();
-  }
-}
-
-
-
-
-class SlotModel {
-  final String startTime;
-  final String endTime;
-  final String? patientname;
-  final String? patientMobile;
-
-  bool get isBooked => patientname != null;
-
-  SlotModel({
-    required this.startTime,
-    required this.endTime,
-    this.patientname,
-    this.patientMobile,
-  });
-
-  factory SlotModel.fromJson(Map<String, dynamic> json) {
-    return SlotModel(
-      startTime: json["startTime"],
-      endTime: json["endTime"],
-      patientname: json["patientname"],
-      patientMobile: json["patientMobile"]?.toString(),
-    );
   }
 }

@@ -15,7 +15,7 @@ class Authprovider extends ChangeNotifier {
   Future<bool> login(
       String email, String password, BuildContext context) async {
 
-    String url = "${Constants.baseUrl}/api/v1/doctor/loginphone";
+    String url = "${Constants.baseUrl}/api/v1/amdin/loginphone";
     print(url);
     print(email);
     // '${Constants.baseUrl}/app/log-in/phone-otp'
@@ -79,7 +79,7 @@ class Authprovider extends ChangeNotifier {
 
   Future<bool> sendOTP(
       String email, String password, BuildContext context) async {
-    String url = "${Constants.baseUrl}/api/v1/user/login";
+    String url = "${Constants.baseUrl}/api/v1/admin/loginotpphone";
     print(url);
     print(email);
     print(password);
@@ -99,10 +99,10 @@ class Authprovider extends ChangeNotifier {
         final responseData = jsonDecode(response.body);
         print(responseData);
         // print(responseData['token']);
-        // await secureStorage.writeSecureData('token', responseData['token']);
-        // await secureStorage.readSecureData('token').then((value) {
-        //   Constants.token = value;
-        // });
+        await secureStorage.writeSecureData('phone', responseData['phone']);
+        await secureStorage.readSecureData('phone').then((value) {
+          Constants.phone = value;
+        });
 
         // print("Constants.token ${Constants.token}");
 
@@ -140,7 +140,7 @@ class Authprovider extends ChangeNotifier {
 
   Future<void> resendOTP(
       String email, String password, BuildContext context) async {
-    String url = "${Constants.baseUrl}/api/v1/doctor/loginotpphone";
+    String url = "${Constants.baseUrl}/api/v1/admin/loginotpphone";
 
     try {
       final response = await http.post(
@@ -188,7 +188,7 @@ class Authprovider extends ChangeNotifier {
 
   Future<void> verifyphoneOtp(
       String email, String otp, BuildContext context) async {
-    String url = "${Constants.baseUrl}/api/v1/user/verifyotp";
+    String url = "${Constants.baseUrl}/api/v1/admin/verifyotpphone";
     try {
       final response = await http.post(
         Uri.parse(url),
@@ -228,11 +228,7 @@ class Authprovider extends ChangeNotifier {
 
         ScaffoldMessenger.of(context).showSnackBar(sucessSnackbar);
 
-        if (responseData['role'] == "doctor") {
-      // context.router.replace(const HomeRoute());
-    } else if (responseData['role'] == "admin") {
-     context.router.replace(const AdminDashboardRoute());
-    }
+       context.router.replace(const AdminDashboardRoute());
 
 
         // responseData['role'] =='doctor'? context.router.popAndPush(HomeRoute()):MaterialPageRoute(builder: (context) => const AdminDashboardPage());

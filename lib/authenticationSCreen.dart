@@ -87,6 +87,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   @override
   Widget build(BuildContext context) {
     Authprovider authprovider = context.read<Authprovider>();
+    
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -130,7 +131,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                       height: 10,
                     ),
                     Text(
-                      'We have sent OTP code to Registered phone number',
+                      'We have sent OTP code to Registered phone number ${Constants.phone}',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,

@@ -321,10 +321,10 @@ class _LoginPageState extends State<LoginPage> {
 
                                         isloggedin
                                             ? context.router
-                                                .popAndPush(AuthenticationRoute(
+                                                .replaceAll([AuthenticationRoute(
                                                 email: inputemailText,
                                                 password: passwordText,
-                                              ))
+                                              )])
                                             : null;
                                       // }
                                     }

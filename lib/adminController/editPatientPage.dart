@@ -243,10 +243,7 @@ class _EditPatientAdminPageState extends State<EditPatientAdminPage> {
                                     RegExp(r'[a-zA-Z0-9.@]')),
                               ],
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return null;
-                                }
-
+                                
                                  const emailRegex =
                       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|org|net|edu|gov|in|io|co|me|info|biz|xyz)$';
 

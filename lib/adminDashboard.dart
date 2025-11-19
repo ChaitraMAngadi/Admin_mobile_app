@@ -32,7 +32,7 @@ final SecureStorage secureStorage = SecureStorage();
     AllPatientsPage(),
      DoctorDetailsPage(),
      TodaysOutvisitsPage(),
-     AdminProfilePage(),
+    //  AdminProfilePage(),
   ];
 
   @override
@@ -129,8 +129,10 @@ Widget build(BuildContext context) {
                 title: const Text('Logout'),
                 onTap: () async {
                   await secureStorage.deleteSecureData('token');
+                  await secureStorage.deleteSecureData('phone');
                   Constants.token =
                       await secureStorage.readSecureData('token') ?? '';
+                      await secureStorage.readSecureData('phone') ?? '';
                   context.router.replaceAll([LoginRoute()]);
                 },
               ),
@@ -153,10 +155,10 @@ Widget build(BuildContext context) {
               icon: Icon(Icons.person_pin_rounded),
               label: "Today's Visits",
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.person),
+            //   label: 'Profile',
+            // ),
           ],
           backgroundColor: const Color(0xFF0857C0),
           currentIndex: _selectedIndex,

@@ -1,8 +1,9 @@
 class Constants {
-  // static const String baseUrl = "http://10.65.193.152:5000";
+  // static const String baseUrl = "http://192.168.0.237:5000";
+  static const String baseUrl = "https://jellyfish-app-knz87.ondigitalocean.app";
   // static const String baseUrl =
   //     "https://stingray-app-2-nhnb4.ondigitalocean.app";
-  static const String baseUrl = "https://sea-lion-app-k5qg4.ondigitalocean.app";
+  // static const String baseUrl = "https://sea-lion-app-k5qg4.ondigitalocean.app";
   // static const String baseUrl = "https://absolumens-backend.vercel.app";
   // static const String baseUrl =
   //     "https://hospital-management-backend-gamma.vercel.app";
