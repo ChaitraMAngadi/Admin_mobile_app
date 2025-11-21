@@ -407,6 +407,21 @@ class _SlotPageState extends State<SlotPage> {
                                 ),
                               ),
                             ),
+
+                            if(hasBookedSlots)
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 16,
+                              vertical: 8,),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(16,)),
+                                color: Colors.amberAccent.shade100,
+                              ),
+                              child: Text("⚠️ Timing updates are disabled because there are existing bookings on this date. Please cancel all bookings first to modify the schedule.",
+                              style: TextStyle(
+                                color: Colors.amberAccent.shade700,
+                              ),),
+                            )
                           ],
                         ),
                       ),
@@ -451,40 +466,40 @@ class _SlotPageState extends State<SlotPage> {
                                     SizedBox(
                                       height: 6,
                                     ),
-                                    ElevatedButton(
-                              style:  ButtonStyle(
-                                padding: WidgetStatePropertyAll(
-                                  EdgeInsets.symmetric(
-                                    vertical: 14,
-                                    horizontal: 20,
-                                  ),
-                                ),
-                                backgroundColor: WidgetStatePropertyAll(
-                                  Color(0XFF0857C0),
-                                ),
-                                shape: WidgetStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(14),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              onPressed:() async {
+                            //         ElevatedButton(
+                            //   style:  ButtonStyle(
+                            //     padding: WidgetStatePropertyAll(
+                            //       EdgeInsets.symmetric(
+                            //         vertical: 14,
+                            //         horizontal: 20,
+                            //       ),
+                            //     ),
+                            //     backgroundColor: WidgetStatePropertyAll(
+                            //       Color(0XFF0857C0),
+                            //     ),
+                            //     shape: WidgetStatePropertyAll(
+                            //       RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.all(
+                            //           Radius.circular(14),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            //   onPressed:() async {
                                
-                                await p.loadByDate(selectedDate, widget.patientId);
-                                _refreshControllers(p);
+                            //     await p.loadByDate(selectedDate, widget.patientId);
+                            //     _refreshControllers(p);
       
-                                // Implement time change logic
-                              },
-                              child:  Text(
-                                "Change Date",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            )
+                            //     // Implement time change logic
+                            //   },
+                            //   child:  Text(
+                            //     "Change Date",
+                            //     style: TextStyle(
+                            //       color: Colors.white,
+                            //       fontWeight: FontWeight.bold,
+                            //     ),
+                            //   ),
+                            // )
 
                           ],
                         ),

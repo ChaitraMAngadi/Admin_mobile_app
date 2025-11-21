@@ -19,6 +19,9 @@ class _TodaysAppointmentsPageState extends State<TodaysAppointmentsPage> {
 
   TextEditingController _searchController = TextEditingController();
 
+  String formattedDate = DateFormat('EEEE, dd MMMM yyyy').format(DateTime.now());
+
+
   @override
   void initState() {
     super.initState();
@@ -215,6 +218,40 @@ class _TodaysAppointmentsPageState extends State<TodaysAppointmentsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                
+                  RefreshIndicator(
+                    onRefresh: _handleRefresh,
+                    child: FutureBuilder(
+                      future: fetchtodaysappointments,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.76,
+                              child: _buildShimmerList());
+                        } else {
+                          return Column(
+                            children: [
+                              Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(formattedDate,
+                      style: TextStyle(
+                       color: Colors.grey.shade700,
+                       fontWeight: FontWeight.bold 
+                      ),),
+                      Container(padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10,),
+                        decoration: BoxDecoration(
+                          color: Colors.purple.shade200,
+                          borderRadius: BorderRadius.all(Radius.circular(16),)
+                        ),
+                        child: Text("${adminPageProvider.filteredtodaysappointments.length} APPOINTMENTS",
+                        style: TextStyle(fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                        color: Colors.purple.shade800,),),
+                      )
+                    ],
+                  ),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -229,52 +266,43 @@ class _TodaysAppointmentsPageState extends State<TodaysAppointmentsPage> {
                       ),
                     ),
                   ),
-                  RefreshIndicator(
-                    onRefresh: _handleRefresh,
-                    child: FutureBuilder(
-                      future: fetchtodaysappointments,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.76,
-                              child: _buildShimmerList());
-                        } else {
-                          return SafeArea(
-                            child: adminPageProvider
-                                    .filteredtodaysappointments.isEmpty
-                                ? SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.76,
-                                    child: _searchController.text.isNotEmpty
-                                        ? _buildNoSearchResults() // <-- show no results UI if searching
-                                        : const Center(
-                                            child: Text(
-                                              "No Appoiments to show",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                  )
-                                : SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.76,
-                                    child: ListView.builder(
-                                      itemCount: adminPageProvider
-                                          .filteredtodaysappointments.length,
-                                      itemBuilder: (context, index) {
-                                        final item = adminPageProvider
-                                            .filteredtodaysappointments[index];
-                                        return TodaysAppointmentModel(
-                                          patientname: item['patientname']??'',
-                                          patientmobile: item['patientMobile'].toString()??'',
-                                          starttime: item['startTime']??'',
-                                          endtime: item['endTime']??'',
-                                          doctorname: item['doctor']['name']??'',
-                                        );
-                                      },
-                                    ),
-                                  ),
+                              SafeArea(
+                                child: adminPageProvider
+                                        .filteredtodaysappointments.isEmpty
+                                    ? SizedBox(
+                                        height: MediaQuery.of(context).size.height *
+                                            0.76,
+                                        child: _searchController.text.isNotEmpty
+                                            ? _buildNoSearchResults() // <-- show no results UI if searching
+                                            : const Center(
+                                                child: Text(
+                                                  "No Appoiments to show",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                              ),
+                                      )
+                                    : SizedBox(
+                                        height: MediaQuery.of(context).size.height *
+                                            0.76,
+                                        child: ListView.builder(
+                                          itemCount: adminPageProvider
+                                              .filteredtodaysappointments.length,
+                                          itemBuilder: (context, index) {
+                                            final item = adminPageProvider
+                                                .filteredtodaysappointments[index];
+                                            return TodaysAppointmentModel(
+                                              patientname: item['patientname']??'',
+                                              patientmobile: item['patientMobile'].toString()??'',
+                                              starttime: item['startTime']??'',
+                                              endtime: item['endTime']??'',
+                                              doctorname: item['doctor']['name']??'',
+                                            );
+                                          },
+                                        ),
+                                      ),
+                              ),
+                            ],
                           );
                         }
                       },

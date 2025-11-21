@@ -98,10 +98,9 @@ class Authprovider extends ChangeNotifier {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         print(responseData);
-        // print(responseData['token']);
-        await secureStorage.writeSecureData('phone', responseData['phone']);
+        await secureStorage.writeSecureData('phone', responseData['phone'].toString());
         await secureStorage.readSecureData('phone').then((value) {
-          Constants.phone = value;
+          Constants.phone = value.toString();
         });
 
         // print("Constants.token ${Constants.token}");
