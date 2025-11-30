@@ -166,7 +166,7 @@ class _PatientAdminOutvisitsPageState
                                 color: Colors.white),
                             SizedBox(width: 6),
                             Text(
-                              "Add Visit",
+                              "Register Visits",
                               style:
                                   TextStyle(fontSize: 16, color: Colors.white),
                             ),

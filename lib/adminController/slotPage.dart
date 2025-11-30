@@ -407,7 +407,8 @@ class _SlotPageState extends State<SlotPage> {
                                 ),
                               ),
                             ),
-
+                            if(hasBookedSlots)
+                            SizedBox(height: 8,),
                             if(hasBookedSlots)
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 16,
@@ -415,10 +416,11 @@ class _SlotPageState extends State<SlotPage> {
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.all(Radius.circular(16,)),
-                                color: Colors.amberAccent.shade100,
+                                color: Colors.amber.shade50,
                               ),
                               child: Text("⚠️ Timing updates are disabled because there are existing bookings on this date. Please cancel all bookings first to modify the schedule.",
                               style: TextStyle(
+                                fontWeight: FontWeight.bold,
                                 color: Colors.amberAccent.shade700,
                               ),),
                             )
@@ -487,8 +489,8 @@ class _SlotPageState extends State<SlotPage> {
                             //   ),
                             //   onPressed:() async {
                                
-                            //     await p.loadByDate(selectedDate, widget.patientId);
-                            //     _refreshControllers(p);
+                                // await p.loadByDate(selectedDate, widget.patientId);
+                                // _refreshControllers(p);
       
                             //     // Implement time change logic
                             //   },
@@ -517,6 +519,7 @@ class _SlotPageState extends State<SlotPage> {
 
  void _openCalendar() async {
     DateTime today = DateTime.now();
+  final p = Provider.of<AdminPageProvider>(context, listen: false);
 
     // Limit: last 7 days + next 7 days
     DateTime firstDate = today.subtract(const Duration(days: 7));
@@ -547,7 +550,10 @@ class _SlotPageState extends State<SlotPage> {
       setState(() {
         selectedDate = picked;
         dateController.text = DateFormat("dd-MM-yyyy").format(picked);
+   
       });
+      p.loadByDate(selectedDate, widget.patientId);
+                                _refreshControllers(p);
     }
   }
 
@@ -837,6 +843,7 @@ String formatDate(String date) {
 
   /// ✅ DELETE POPUP
   void showDeletePopup(SlotModel slot, AdminPageProvider p) {
+    print("slot.patientMobile ${slot}");
     showDialog(
       context: context,
       builder: (_) => Dialog(
@@ -922,7 +929,7 @@ String formatDate(String date) {
                     Row(
                       children: [
                         const Text(
-                          "Name:",
+                          "Name: ",
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -941,7 +948,7 @@ String formatDate(String date) {
                     Row(
                       children: [
                         const Text(
-                          "Mobile:",
+                          "Mobile: ",
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -960,7 +967,7 @@ String formatDate(String date) {
                     Row(
                       children: [
                         const Text(
-                          "Time Slot:",
+                          "Time Slot: ",
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -979,7 +986,7 @@ String formatDate(String date) {
                     Row(
                       children: [
                         const Text(
-                          "Date:",
+                          "Date: ",
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,

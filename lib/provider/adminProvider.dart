@@ -692,10 +692,41 @@ bool isSlotBooked(DateTime slotStart, DateTime slotEnd, List<SlotModel> bookedSl
 
 
 
-  void generateSlots() {
-  final List<SlotModel> all = [];
+//   void generateSlots() {
+//   final List<SlotModel> all = [];
 
-  // Parse login + logout times
+//   // Parse login + logout times
+//   final start = DateFormat("HH:mm").parse(loginTime);
+//   final end = DateFormat("HH:mm").parse(logoutTime);
+
+//   DateTime current = start;
+
+//   while (current.isBefore(end)) {
+//     final next = current.add(Duration(minutes: duration));
+
+//     if (!next.isAfter(end)) {
+//       bool booked = isSlotBooked(current, next, bookedSlots);
+
+
+//       all.add(
+//         SlotModel(
+//           startTime: DateFormat("HH:mm").format(current),
+//           endTime: DateFormat("HH:mm").format(next),
+//           patientname: booked ? "BOOKED" : null,
+//         ),
+//       );
+//     }
+
+//     current = next;
+//   }
+
+//   finalSlots = all;
+// }
+
+
+void generateSlots() {
+  List<SlotModel> all = [];
+
   final start = DateFormat("HH:mm").parse(loginTime);
   final end = DateFormat("HH:mm").parse(logoutTime);
 
@@ -703,17 +734,31 @@ bool isSlotBooked(DateTime slotStart, DateTime slotEnd, List<SlotModel> bookedSl
 
   while (current.isBefore(end)) {
     final next = current.add(Duration(minutes: duration));
-
     if (!next.isAfter(end)) {
-      bool booked = isSlotBooked(current, next, bookedSlots);
 
+      // Check if this slot is already booked from backend
+      SlotModel? matched;
 
+      for (var b in bookedSlots) {
+        final bStart = DateFormat("HH:mm").parse(b.startTime);
+        final bEnd = DateFormat("HH:mm").parse(b.endTime);
+
+        // Overlap check
+        if (current.isBefore(bEnd) && next.isAfter(bStart)) {
+          matched = b; // this booked slot matches the current slot
+          break;
+        }
+      }
+
+      // If matched = booked slot from backend → carry real mobile number
       all.add(
-        SlotModel(
-          startTime: DateFormat("HH:mm").format(current),
-          endTime: DateFormat("HH:mm").format(next),
-          patientname: booked ? "BOOKED" : null,
-        ),
+        matched ??
+            SlotModel(
+              startTime: DateFormat("HH:mm").format(current),
+              endTime: DateFormat("HH:mm").format(next),
+              patientname: null,
+              patientMobile: "", // free slot → keep empty string
+            ),
       );
     }
 
@@ -722,7 +767,6 @@ bool isSlotBooked(DateTime slotStart, DateTime slotEnd, List<SlotModel> bookedSl
 
   finalSlots = all;
 }
-
 
 
   /// ✅ Book Slot API

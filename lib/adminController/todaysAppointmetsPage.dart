@@ -232,26 +232,29 @@ class _TodaysAppointmentsPageState extends State<TodaysAppointmentsPage> {
                         } else {
                           return Column(
                             children: [
-                              Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(formattedDate,
-                      style: TextStyle(
-                       color: Colors.grey.shade700,
-                       fontWeight: FontWeight.bold 
-                      ),),
-                      Container(padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10,),
-                        decoration: BoxDecoration(
-                          color: Colors.purple.shade200,
-                          borderRadius: BorderRadius.all(Radius.circular(16),)
-                        ),
-                        child: Text("${adminPageProvider.filteredtodaysappointments.length} APPOINTMENTS",
-                        style: TextStyle(fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                        color: Colors.purple.shade800,),),
-                      )
-                    ],
-                  ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+                                child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Text(formattedDate,
+                                                      style: TextStyle(
+                                                       color: Colors.grey.shade700,
+                                                       fontWeight: FontWeight.bold 
+                                                      ),),
+                                                      Container(padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10,),
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.purple.shade200,
+                                                          borderRadius: BorderRadius.all(Radius.circular(16),)
+                                                        ),
+                                                        child: Text("${adminPageProvider.filteredtodaysappointments.length} APPOINTMENTS",
+                                                        style: TextStyle(fontWeight: FontWeight.bold,
+                                                        fontSize: 16,
+                                                        color: Colors.purple.shade800,),),
+                                                      )
+                                                    ],
+                                                  ),
+                              ),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

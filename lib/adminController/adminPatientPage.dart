@@ -353,11 +353,13 @@ class _AllPatientsPageState extends State<AllPatientsPage> {
           final sorted = adminprovider.allpatients
             ..sort((a, b) => DateTime.parse(b['createdAt']).compareTo(DateTime.parse(a['createdAt'])));
           final item = sorted[index];
+          final isCreatedByAdmin = item["createdByAdmin"] != null;
 
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: ListTileModel(
+              isCreatedByAdmin:item["createdByAdmin"]??"" ,
               patientname: item['name'], patientId: item['patientId'],
               isActive: item['isActive'] ?? true, 
               
@@ -468,9 +470,10 @@ viewonTap: () {
 
 
 
-            editonTap: (){
+            editonTap:isCreatedByAdmin? (){
               context.router.push(EditPatientAdminRoute(patientId:item['patientId'] ));
-            }, outvisitonTap: (){
+            }:(){},
+             outvisitonTap: (){
               context.router.push(PatientAdminOutvisitsRoute(patientId: item['patientId']));
             }, 
             // invisitonTap: (){
@@ -497,7 +500,7 @@ class ListTileModel extends StatelessWidget {
     super.key,
   
     required this.patientname,
-    required this.patientId, required this.viewonTap, required this.editonTap, required this.outvisitonTap, required this.isActive,
+    required this.patientId, required this.viewonTap, required this.editonTap, required this.outvisitonTap, required this.isActive, required this.isCreatedByAdmin,
     //  required this.invisitonTap,
     
   });
@@ -508,6 +511,7 @@ class ListTileModel extends StatelessWidget {
   // final VoidCallback invisitonTap;
   final String patientId;
   final bool isActive;
+  final String isCreatedByAdmin;
 
   @override
   Widget build(BuildContext context) {
@@ -616,7 +620,7 @@ class ListTileModel extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                      style: ElevatedButton.styleFrom(
-                        backgroundColor:Colors.brown.shade100,
+                        backgroundColor:isCreatedByAdmin.isNotEmpty? Colors.brown.shade100:Colors.grey.shade300,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -630,11 +634,11 @@ class ListTileModel extends StatelessWidget {
                     Text("Edit",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.brown.shade700,
+                      color:isCreatedByAdmin.isNotEmpty? Colors.brown.shade700:Colors.grey,
                     ),),
                     SizedBox(width: 4,),
                     Icon(Icons.edit_square,
-                    color: Colors.brown.shade700,),
+                    color:isCreatedByAdmin.isNotEmpty? Colors.brown.shade700 : Colors.grey,),
                   ],)),
                 ),
                 // IconButton(onPressed: editonTap, icon: const Icon(Icons.edit_square,
