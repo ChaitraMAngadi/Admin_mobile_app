@@ -46,9 +46,9 @@ final SecureStorage secureStorage = SecureStorage();
 
  Future<void> _checkToken() async {
     Constants.token = await secureStorage.readSecureData('token');
-    Constants.role = await secureStorage.readSecureData('role');
+    // Constants.role = await secureStorage.readSecureData('role');
     print(Constants.token);
-    print(Constants.role);
+    // print(Constants.role);
     setState(() {
       Constants.token = Constants.token ?? '';
       isLoading = false;

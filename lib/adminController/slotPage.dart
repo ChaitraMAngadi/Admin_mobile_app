@@ -67,6 +67,14 @@ class _SlotPageState extends State<SlotPage> {
     return "$hour:$minute";
   }
 
+  String normalizeTo24(String time) {
+  final parts = time.split(":");
+  final hour = parts[0].padLeft(2, '0');
+  final minute = parts[1].padLeft(2, '0');
+  return "$hour:$minute";
+}
+
+
   final formkey = GlobalKey<FormState>();
 
   // @override
@@ -98,7 +106,15 @@ class _SlotPageState extends State<SlotPage> {
       final p = Provider.of<AdminPageProvider>(context, listen: false);
       await p.loadInitialData(widget.patientId, selectedDate);
 
-    _refreshControllers(p);
+       loginController.text = normalizeTo24(p.loginTime);
+      logoutController.text = normalizeTo24(p.logoutTime);
+
+      // ✅ convert "30" → "30 Minutes"
+      selectedDurationText = durationToLabel[p.duration];
+
+      durationController.text = p.duration.toString();
+
+    // _refreshControllers(p);
     });
 
     // Scroll to today after build
@@ -107,17 +123,25 @@ class _SlotPageState extends State<SlotPage> {
   // });
   }
 
-   void _refreshControllers(AdminPageProvider p) {
-     loginController.text = p.loginTime;
-      logoutController.text = p.logoutTime;
+//    void _refreshControllers(AdminPageProvider p) {
+//     //  loginController.text = p.loginTime;
+//     //   logoutController.text = p.logoutTime;
 
-      // ✅ convert "30" → "30 Minutes"
-      selectedDurationText = durationToLabel[p.duration];
+//     //   // ✅ convert "30" → "30 Minutes"
+//     //   selectedDurationText = durationToLabel[p.duration];
 
-      durationController.text = p.duration.toString();
+//     //   durationController.text = p.duration.toString();
+//  loginController.text = "9:00";
+//       logoutController.text = "17:00";
 
-      setState(() {});
-  }
+//       // ✅ convert "30" → "30 Minutes"
+//       selectedDurationText ="30 Minutes";
+
+//       durationController.text = "30";
+    
+
+//       setState(() {});
+//   }
 
 
  void _scrollToToday() {
@@ -468,41 +492,7 @@ class _SlotPageState extends State<SlotPage> {
                                     SizedBox(
                                       height: 6,
                                     ),
-                            //         ElevatedButton(
-                            //   style:  ButtonStyle(
-                            //     padding: WidgetStatePropertyAll(
-                            //       EdgeInsets.symmetric(
-                            //         vertical: 14,
-                            //         horizontal: 20,
-                            //       ),
-                            //     ),
-                            //     backgroundColor: WidgetStatePropertyAll(
-                            //       Color(0XFF0857C0),
-                            //     ),
-                            //     shape: WidgetStatePropertyAll(
-                            //       RoundedRectangleBorder(
-                            //         borderRadius: BorderRadius.all(
-                            //           Radius.circular(14),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ),
-                            //   onPressed:() async {
-                               
-                                // await p.loadByDate(selectedDate, widget.patientId);
-                                // _refreshControllers(p);
-      
-                            //     // Implement time change logic
-                            //   },
-                            //   child:  Text(
-                            //     "Change Date",
-                            //     style: TextStyle(
-                            //       color: Colors.white,
-                            //       fontWeight: FontWeight.bold,
-                            //     ),
-                            //   ),
-                            // )
-
+                           
                           ],
                         ),
                       ),
@@ -546,14 +536,28 @@ class _SlotPageState extends State<SlotPage> {
       },
     );
 
-    if (picked != null) {
+    if (picked != null)  {
       setState(() {
         selectedDate = picked;
         dateController.text = DateFormat("dd-MM-yyyy").format(picked);
    
       });
-      p.loadByDate(selectedDate, widget.patientId);
-                                _refreshControllers(p);
+
+       await p.loadByDate(selectedDate, widget.patientId);
+
+    print("API LoginTime: ${p.loginTime}");
+    print("API LogoutTime: ${p.logoutTime}");
+    print("API Duration: ${p.duration}");
+
+    // UPDATE CONTROLLERS AFTER DATA IS LOADED
+    setState(() {
+      loginController.text = p.loginTime;
+      logoutController.text = p.logoutTime;
+      durationController.text = p.duration.toString();
+      selectedDurationText = durationToLabel[p.duration];
+    });
+    
+                               
     }
   }
 
@@ -1030,129 +1034,4 @@ String formatDate(String date) {
       ),
     );
   }
-  
-// void _openDateBottomSheet() {
-//     DateTime today = DateTime.now();
-
-//     // Past 7 → Today → Next 7
-//     List<DateTime> selectableDates = List.generate(
-//       15,
-//       (i) => today.add(Duration(days: i - 7)),
-//     );
-
-//     showModalBottomSheet(
-//       context: context,
-//       builder: (context) {
-//         return Container(
-//           padding: EdgeInsets.all(15),
-//           height: 380,
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text("Select Date",
-//                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-//               Divider(),
-//               Expanded(
-//                 child: ListView.builder(
-//                   itemCount: selectableDates.length,
-//                   itemBuilder: (ctx, i) {
-//                     DateTime d = selectableDates[i];
-//                     String formatted = DateFormat("dd-MM-yyyy").format(d);
-
-//                     return ListTile(
-//                       title: Text(
-//                         formatted,
-//                         style: TextStyle(
-//                           fontWeight: d.day == today.day &&
-//                                   d.month == today.month &&
-//                                   d.year == today.year
-//                               ? FontWeight.bold
-//                               : FontWeight.normal,
-//                           color: d.isAtSameMomentAs(today)
-//                               ? Colors.blue
-//                               : Colors.black,
-//                         ),
-//                       ),
-//                       onTap: () {
-//                         setState(() {
-//                           selectedDate = d;
-//                           dateController.text = formatted;
-//                         });
-
-//                         // widget.onDateSelected(d); 
-//                         Navigator.pop(context);
-//                       },
-//                     );
-//                   },
-//                 ),
-//               ),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-
-
-  // Widget dateSelector(AdminPageProvider p) {
-  //   List<DateTime> dates = List.generate(
-  //     15,
-  //     (i) => DateTime.now().subtract(Duration(days: 7 - i)),
-  //   );
-
-  //   return SizedBox(
-  //     height: 75,
-  //     child: ListView.builder(
-  //       controller: _dateScrollController,
-  //       scrollDirection: Axis.horizontal,
-  //       itemCount: dates.length,
-  //       itemBuilder: (_, i) {
-  //         DateTime d = dates[i];
-  //         bool active =
-  //             d.day == selectedDate.day &&
-  //             d.month == selectedDate.month &&
-  //             d.year == selectedDate.year;
-
-  //         return GestureDetector(
-  //           onTap: () {
-  //             setState(() => selectedDate = d);
-  //             p.loadByDate(d, widget.patientId);
-  //           },
-  //           child: Container(
-  //             margin: const EdgeInsets.only(right: 12),
-  //             width: 70,
-  //             padding: const EdgeInsets.all(10),
-  //             decoration: BoxDecoration(
-  //               color: active ? Colors.blue : Colors.grey.shade300,
-  //               borderRadius: BorderRadius.circular(12),
-  //             ),
-  //             child: Column(
-  //               children: [
-  //                 Text(
-  //                   DateFormat("EEE").format(d),
-  //                   style: TextStyle(
-  //                     color: active ? Colors.white : Colors.black,
-  //                   ),
-  //                 ),
-  //                 Text(
-  //                   d.day.toString(),
-  //                   style: TextStyle(
-  //                     fontSize: 18,
-  //                     color: active ? Colors.white : Colors.black,
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
-
-
-
-
-  
 }

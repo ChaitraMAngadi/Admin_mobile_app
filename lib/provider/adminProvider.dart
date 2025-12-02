@@ -593,14 +593,21 @@ String loginTime = '9:00';
     print(data);
     doctorname = data["doctorName"];
 
-    if(data["doctorTime"] != null){
-       loginTime = data["doctorTime"]["loginTime"];
-    logoutTime = data["doctorTime"]["leaveTime"];
-    duration = data["doctorTime"]["duration"];
-    }else{
+    if(data["doctorTime"] == null){
       loginTime = '9:00';
       logoutTime = '17:00';
       duration = 30;
+    //    loginTime = data["doctorTime"]["loginTime"];
+    // logoutTime = data["doctorTime"]["leaveTime"];
+    // duration = data["doctorTime"]["duration"];
+    }
+    else{
+      // loginTime = '9:00';
+      // logoutTime = '17:00';
+      // duration = 30;
+       loginTime = data["doctorTime"]["loginTime"];
+    logoutTime = data["doctorTime"]["leaveTime"];
+    duration = data["doctorTime"]["duration"];
     }
 
     bookedSlots = (data["slots"] as List)
@@ -775,15 +782,6 @@ void generateSlots() {
 
     Constants.token = await secureStorage.readSecureData('token') ?? '';
 
-    // final body = {
-      
-    //   "bookingDate": DateFormat("dd-MM-yyyy").format(date),
-    //   "startTime": slot.startTime,
-    //   // "endTime": slot.endTime,
-    //   "patientname": name,
-    //   "patientMobile": mobile,
-    // };
-
 try{
 
     
@@ -794,6 +792,8 @@ final Map<String, dynamic> requestBody = {
       "patientname": name,
       "patientMobile": mobile,
       };
+
+      print(requestBody);
 
     final response = await http.post(
         Uri.parse("${Constants.baseUrl}/api/v1/admin/slotbook/$userid"),
@@ -838,6 +838,7 @@ final Map<String, dynamic> requestBody = {
       }
     
    } catch(e){
+    print(e);
     final error = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(error);
    }

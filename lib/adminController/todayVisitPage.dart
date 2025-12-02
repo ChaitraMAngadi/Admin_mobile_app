@@ -522,11 +522,15 @@ class TodaysVisitModel extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  patientname,
-                  style: const TextStyle(
-                    fontSize: 15,
+                Expanded(
+                  child: Text(
+                    patientname,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                 ),
               ],
@@ -540,11 +544,15 @@ class TodaysVisitModel extends StatelessWidget {
                   'chiefcomplaint: ',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  chiefcomplaint,
-                  style: const TextStyle(
-                    fontSize: 15,
+                Expanded(
+                  child: Text(
+                    chiefcomplaint,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                 ),
               ],

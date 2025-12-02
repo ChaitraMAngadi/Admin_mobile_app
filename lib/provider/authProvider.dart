@@ -15,9 +15,10 @@ class Authprovider extends ChangeNotifier {
   Future<bool> login(
       String email, String password, BuildContext context) async {
 
-    String url = "${Constants.baseUrl}/api/v1/amdin/loginphone";
+    String url = "${Constants.baseUrl}/api/v1/admin/loginphone";
     print(url);
     print(email);
+    print(password);
     // '${Constants.baseUrl}/app/log-in/phone-otp'
     try {
       final response = await http.post(
@@ -33,6 +34,7 @@ class Authprovider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
+        print(responseData);
         print(responseData['token']);
         await secureStorage.writeSecureData('token', responseData['token']);
         await secureStorage.readSecureData('token').then((value) {

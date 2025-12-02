@@ -229,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
                                   onPressed: () async {
                                     if (loginformkey.currentState!.validate()) {
                                       final inputemailText =
-                                          emailController.text.trim();
+                                          emailController.text.trim().toLowerCase();
                                       final passwordText =
                                           passwordController.text;
                                           // print(inputemailText);
@@ -297,22 +297,22 @@ class _LoginPageState extends State<LoginPage> {
                                       //       : null;
                                       // }
 
-                                      // if (inputemailText == "ww@gmail.com") {
-                                      //   print(inputemailText);
-                                      //   bool isloggedin =
-                                      //       await authprovider.login(
-                                      //           inputemailText,
-                                      //           passwordText,
-                                      //           context);
+                                      if (inputemailText == "damodar@gmail.com" && passwordText =="8217309343") {
+                                        print(inputemailText);
+                                        bool isloggedin =
+                                            await authprovider.login(
+                                                inputemailText,
+                                                passwordText,
+                                                context);
 
-                                      //   isloggedin
-                                      //       ? context.router
-                                      //           .popAndPush(HomeRoute())
-                                      //       // context.router.popAndPush(
-                                      //       //     const AuthenticationRoute())
-                                      //       : null;
-                                      // } 
-                                      // else {
+                                        isloggedin
+                                            ? context.router
+                                                .replaceAll([AdminDashboardRoute()])
+                                            // context.router.popAndPush(
+                                            //     const AuthenticationRoute())
+                                            : null;
+                                      } 
+                                      else {
                                         bool isloggedin =
                                             await authprovider.sendOTP(
                                                 inputemailText,
@@ -326,7 +326,7 @@ class _LoginPageState extends State<LoginPage> {
                                                 password: passwordText,
                                               )])
                                             : null;
-                                      // }
+                                      }
                                     }
                                   },
                                   child: const Text(
