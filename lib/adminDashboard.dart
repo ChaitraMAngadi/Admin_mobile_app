@@ -11,6 +11,8 @@ import 'package:admin_mobile_application/services/secureStorage.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 
 
@@ -55,12 +57,31 @@ final SecureStorage secureStorage = SecureStorage();
     });
   }
 
+  Future<void> openUrl(String url) async {
+  final Uri uri = Uri.parse(url);
+
+  try {
+    await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication, // Always open in browser
+    );
+  } catch (e) {
+    print("URL Launch Error: $e");
+  }
+}
+
+
+
 @override
 Widget build(BuildContext context) {
   return Consumer<AdminPageProvider>(
     builder: (context, adminPageProvider, child) {
       return Scaffold(
-        appBar: AppBar(
+        appBar: AppBar(actions: [
+          IconButton(onPressed: (){
+            openUrl("https://app.ppldoc.com/help");
+          }, icon: Icon(Icons.help_outline))
+        ],
           // automaticallyImplyLeading: false,
           backgroundColor: const Color(0xFF0857C0),
           iconTheme: const IconThemeData(color: Colors.white),
@@ -72,7 +93,9 @@ Widget build(BuildContext context) {
               color: Colors.white,
             ),
           ),
+          
         ),
+        
         drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,

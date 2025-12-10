@@ -22,7 +22,7 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> _checkLogin() async {
     final SecureStorage secureStorage = SecureStorage();
-    Constants.role = await secureStorage.readSecureData('role') ?? '';
+    // Constants.role = await secureStorage.readSecureData('role') ?? '';
     Constants.token = await secureStorage.readSecureData('token') ?? '';
     // Constants.nursetoken = await secureStorage.readSecureData('nursetoken') ?? '';
 
@@ -31,7 +31,7 @@ class _SplashPageState extends State<SplashPage> {
     //   context.router.replaceAll([const HomeRoute()]);
     // } 
     // else 
-    if (Constants.role == 'admin' && Constants.token.isNotEmpty) {
+    if (Constants.token.isNotEmpty) {
       context.router.replaceAll([const AdminDashboardRoute()]);
     } 
     // else if (Constants.nursetoken.isNotEmpty) {

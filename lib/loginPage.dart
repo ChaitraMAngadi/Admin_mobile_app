@@ -5,6 +5,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
@@ -336,6 +337,13 @@ class _LoginPageState extends State<LoginPage> {
                                         fontWeight: FontWeight.bold),
                                   )),
                             ),
+                            TextButton(onPressed: (){
+                              openUrl("https://app.ppldoc.com/help");
+                            }, child: const Text("Need Help",
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: Colors.lightBlue,
+                            ),)),
                             const SizedBox(
                               height: 30,
                             ),
@@ -350,4 +358,16 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+  Future<void> openUrl(String url) async {
+  final Uri uri = Uri.parse(url);
+
+  try {
+    await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication, // Always open in browser
+    );
+  } catch (e) {
+    print("URL Launch Error: $e");
+  }
+}
 }

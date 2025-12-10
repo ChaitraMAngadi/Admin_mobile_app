@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 @RoutePage()
 class AuthenticationPage extends StatefulWidget {
@@ -223,6 +224,13 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                             : "Resend OTP",
                       ),
                     ),
+                    TextButton(onPressed: (){
+                              openUrl("https://app.ppldoc.com/help");
+                            }, child: const Text("Need Help",
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: Colors.lightBlue,
+                            ),)),
                   ],
                 ),
               ),
@@ -232,4 +240,16 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       ),
     );
   }
+  Future<void> openUrl(String url) async {
+  final Uri uri = Uri.parse(url);
+
+  try {
+    await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication, // Always open in browser
+    );
+  } catch (e) {
+    print("URL Launch Error: $e");
+  }
+}
 }
