@@ -337,13 +337,19 @@ class _LoginPageState extends State<LoginPage> {
                                         fontWeight: FontWeight.bold),
                                   )),
                             ),
-                            TextButton(onPressed: (){
-                              openUrl("https://app.ppldoc.com/help");
-                            }, child: const Text("Need Help",
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Colors.lightBlue,
-                            ),)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(""),
+                                TextButton(onPressed: (){
+                                  openUrl("https://app.ppldoc.com/help");
+                                }, child: const Text("Need Help?",
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.lightBlue,
+                                ),)),
+                              ],
+                            ),
                             const SizedBox(
                               height: 30,
                             ),

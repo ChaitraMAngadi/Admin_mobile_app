@@ -28,7 +28,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   // late OTPTextEditController otpTextEditController;
   // late OTPInteractor otpInteractor;
   Timer? _timer;
-  int _start = 60; // Set your countdown time in seconds
+  int _start = 100; // Set your countdown time in seconds
   bool _isButtonDisabled = true;
   final SecureStorage secureStorage = SecureStorage();
 
@@ -40,7 +40,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   }
 
   void startTimer() {
-    _start = 60; // Reset the timer to 30 seconds
+    _start = 100; // Reset the timer to 30 seconds
     _isButtonDisabled = true;
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -224,13 +224,20 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                             : "Resend OTP",
                       ),
                     ),
-                    TextButton(onPressed: (){
-                              openUrl("https://app.ppldoc.com/help");
-                            }, child: const Text("Need Help",
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Colors.lightBlue,
-                            ),)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(""),
+
+                        TextButton(onPressed: (){
+                                  openUrl("https://app.ppldoc.com/help");
+                                }, child: const Text("Need Help?",
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: Colors.lightBlue,
+                                ),)),
+                      ],
+                    ),
                   ],
                 ),
               ),
