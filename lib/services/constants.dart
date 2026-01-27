@@ -14,4 +14,10 @@ class Constants {
   static String token = '';
   static String phone = '';
   static String role = '';
+
+static  String isLoggedIn = "is_logged_in";
+ static  String biometricEnabled = "biometric_enabled";
+ static String appLockEnabled = "true";
+
+
 }

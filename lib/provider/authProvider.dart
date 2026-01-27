@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 
+import 'package:admin_mobile_application/services/DeviceHeader.dart';
 import 'package:admin_mobile_application/services/constants.dart';
 import 'package:admin_mobile_application/services/secureStorage.dart';
 import 'package:auto_route/auto_route.dart';
@@ -16,6 +17,8 @@ class Authprovider extends ChangeNotifier {
       String email, String password, BuildContext context) async {
 
     String url = "${Constants.baseUrl}/api/v1/admin/loginphone";
+    final headers = await DeviceHeaders.getDeviceHeaders();
+
     print(url);
     print(email);
     print(password);
@@ -25,6 +28,7 @@ class Authprovider extends ChangeNotifier {
         Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          ...headers,
         },
         body: jsonEncode(<String, dynamic>{
           'email': email,
@@ -40,6 +44,22 @@ class Authprovider extends ChangeNotifier {
         await secureStorage.readSecureData('token').then((value) {
           Constants.token = value;
         });
+
+        await secureStorage.writeSecureData("isLoggedIn", "true");
+
+await secureStorage.writeSecureData(
+  "biometricEnabled", "true"
+);
+
+await secureStorage.readSecureData('isLoggedIn').then((value) {
+          Constants.isLoggedIn = value;
+        });
+
+      await secureStorage.readSecureData('biometricEnabled').then((value) {
+          Constants.biometricEnabled = value;
+        });
+print(Constants.isLoggedIn);
+print(Constants.biometricEnabled);
 
         print("Constants.token ${Constants.token}");
 
@@ -82,6 +102,8 @@ class Authprovider extends ChangeNotifier {
   Future<bool> sendOTP(
       String email, String password, BuildContext context) async {
     String url = "${Constants.baseUrl}/api/v1/admin/loginotpphone";
+    final headers = await DeviceHeaders.getDeviceHeaders();
+
     print(url);
     print(email);
     print(password);
@@ -90,6 +112,7 @@ class Authprovider extends ChangeNotifier {
         Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          ...headers,
         },
         body: jsonEncode(<String, dynamic>{
           'email': email,
@@ -142,12 +165,15 @@ class Authprovider extends ChangeNotifier {
   Future<void> resendOTP(
       String email, String password, BuildContext context) async {
     String url = "${Constants.baseUrl}/api/v1/admin/loginotpphone";
+    final headers = await DeviceHeaders.getDeviceHeaders();
+
 
     try {
       final response = await http.post(
         Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          ...headers,
         },
         body: jsonEncode(<String, dynamic>{
           'email': email,
@@ -190,11 +216,15 @@ class Authprovider extends ChangeNotifier {
   Future<void> verifyphoneOtp(
       String email, String otp, BuildContext context) async {
     String url = "${Constants.baseUrl}/api/v1/admin/verifyotpphone";
+final headers = await DeviceHeaders.getDeviceHeaders();
+
+
     try {
       final response = await http.post(
         Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json',
+          ...headers,
         },
         body: jsonEncode(<String, dynamic>{
           'email': email,
@@ -219,6 +249,22 @@ class Authprovider extends ChangeNotifier {
 
         print("Constants.token ${Constants.token}");
         print("Role ${Constants.role}");
+
+  await secureStorage.writeSecureData("isLoggedIn", "true");
+
+await secureStorage.writeSecureData(
+  "biometricEnabled", "true"
+);
+
+await secureStorage.readSecureData('isLoggedIn').then((value) {
+          Constants.isLoggedIn = value;
+        });
+
+      await secureStorage.readSecureData('biometricEnabled').then((value) {
+          Constants.biometricEnabled = value;
+        });
+print(Constants.isLoggedIn);
+print(Constants.biometricEnabled);
 
         final sucessSnackbar = SnackBar(
             backgroundColor: Colors.green[400],

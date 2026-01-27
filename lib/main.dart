@@ -1,8 +1,12 @@
+import 'package:admin_mobile_application/adminController/appLockWrapper.dart';
 import 'package:admin_mobile_application/provider/adminProvider.dart';
 import 'package:admin_mobile_application/provider/authProvider.dart';
 import 'package:admin_mobile_application/routes/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+
+final AppRouter appRouter = AppRouter();
 
 void main() {
   runApp(MultiProvider(providers: [
@@ -30,7 +34,7 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  final _appRouter = AppRouter();
+  // final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +44,13 @@ class MyApp extends StatelessWidget {
       // ), 
       title: 'Admin Management',
       debugShowCheckedModeBanner: false,
-      routerConfig: _appRouter.config(),
+      routerConfig: appRouter.config(),
+    builder: (context, child) {
+        return AppLockWrapper(
+          child: child!,
+        );
+      },
+    
     );
   }
 }

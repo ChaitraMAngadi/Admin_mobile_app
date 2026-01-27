@@ -1,5 +1,6 @@
 import 'dart:convert';
- import 'package:admin_mobile_application/services/constants.dart';
+ import 'package:admin_mobile_application/services/DeviceHeader.dart';
+import 'package:admin_mobile_application/services/constants.dart';
 import 'package:admin_mobile_application/services/secureStorage.dart';
 import 'package:flutter/material.dart';
 
@@ -183,6 +184,8 @@ Future<void> addpatient(String name, String phone, String gender,
       String email, String dob, BuildContext context) async {
     try {
       Constants.token = await secureStorage.readSecureData('token') ?? '';
+      final headers = await DeviceHeaders.getDeviceHeaders();
+
 
       final Map<String, dynamic> requestBody = {
         "name": name,
@@ -200,6 +203,7 @@ Future<void> addpatient(String name, String phone, String gender,
         headers: <String, String>{
           'Authorization': 'Bearer ${Constants.token}',
           'Content-Type': 'application/json',
+          ...headers,
         },
         body: jsonEncode(requestBody),
       );
@@ -278,6 +282,9 @@ Future<void> addpatient(String name, String phone, String gender,
     try {
       Constants.token = await secureStorage.readSecureData('token') ?? '';
 
+      final headers = await DeviceHeaders.getDeviceHeaders();
+
+
       print(
           "name: $name gender: $gender DOB: $dob email: $email phone: $phone");
 
@@ -303,6 +310,7 @@ Future<void> addpatient(String name, String phone, String gender,
         headers: <String, String>{
           'Authorization': 'Bearer ${Constants.token}',
           'Content-Type': 'application/json',
+          ...headers,
         },
         body: jsonEncode(requestBody),
       );
@@ -425,6 +433,8 @@ Future<void> addoutvisit(
       BuildContext context) async {
     try {
       Constants.token = await secureStorage.readSecureData('token') ?? '';
+      final headers = await DeviceHeaders.getDeviceHeaders();
+
 
       final Map<String, dynamic> requestBody = {
         "chief_complaint": cheifcomplaint,
@@ -453,6 +463,7 @@ Future<void> addoutvisit(
         headers: <String, String>{
           'Authorization': 'Bearer ${Constants.token}',
           'Content-Type': 'application/json',
+          ...headers,
         },
         body: jsonEncode(requestBody),
       );
@@ -781,6 +792,8 @@ void generateSlots() {
       SlotModel slot, DateTime date, String name, String mobile, BuildContext context) async {
 
     Constants.token = await secureStorage.readSecureData('token') ?? '';
+    final headers = await DeviceHeaders.getDeviceHeaders();
+
 
 try{
 
@@ -800,6 +813,7 @@ final Map<String, dynamic> requestBody = {
         headers: <String, String>{
           'Authorization': 'Bearer ${Constants.token}',
           'Content-Type': 'application/json',
+          ...headers
         },
         body: jsonEncode(requestBody),
       );
@@ -857,6 +871,8 @@ final Map<String, dynamic> requestBody = {
   Future<void> 
   deleteSlot(String userid,SlotModel slot, DateTime date, BuildContext context ) async {
         Constants.token = await secureStorage.readSecureData('token') ?? '';
+        final headers = await DeviceHeaders.getDeviceHeaders();
+
 
     // final body = {
     //   "doctorId": userid,
@@ -879,6 +895,7 @@ final Map<String, dynamic> requestBody = {
         headers: <String, String>{
           'Authorization': 'Bearer ${Constants.token}',
           'Content-Type': 'application/json',
+          ...headers
         },
         body: jsonEncode(requestBody),
       );
@@ -926,6 +943,7 @@ final Map<String, dynamic> requestBody = {
 
  Future<void> updateDoctorTiming(String doctorId, String login, String logout, int duration, DateTime date, BuildContext context) async {
   Constants.token = await secureStorage.readSecureData('token') ?? '';
+final headers = await DeviceHeaders.getDeviceHeaders();
 
 print(date);
    try{
@@ -946,6 +964,7 @@ final Map<String, dynamic> requestBody = {
         headers: <String, String>{
           'Authorization': 'Bearer ${Constants.token}',
           'Content-Type': 'application/json',
+          ...headers,
         },
         body: jsonEncode(requestBody),
       );

@@ -1,4 +1,5 @@
 import 'package:admin_mobile_application/adminController/adminPatientPage.dart';
+import 'package:admin_mobile_application/adminController/appEnabletoggle.dart';
 import 'package:admin_mobile_application/adminController/doctorDetailsPage.dart';
 import 'package:admin_mobile_application/adminController/profilePage.dart';
 import 'package:admin_mobile_application/adminController/todayVisitPage.dart';
@@ -146,6 +147,7 @@ Widget build(BuildContext context) {
                   );
                 },
               ),
+              AppLockToggle(),
               const Divider(),
               ListTile(
                 leading: const Icon(Icons.logout),
@@ -153,9 +155,13 @@ Widget build(BuildContext context) {
                 onTap: () async {
                   await secureStorage.deleteSecureData('token');
                   await secureStorage.deleteSecureData('phone');
+                   secureStorage.deleteSecureData("isLoggedIn");
+                    secureStorage.deleteSecureData("appLockEnabled");
+                    secureStorage.deleteSecureData("biometricEnabled");
                   Constants.token =
                       await secureStorage.readSecureData('token') ?? '';
                       await secureStorage.readSecureData('phone') ?? '';
+
                   context.router.replaceAll([LoginRoute()]);
                 },
               ),
