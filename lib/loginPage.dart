@@ -1,6 +1,7 @@
 import 'package:admin_mobile_application/provider/authProvider.dart';
 import 'package:admin_mobile_application/routes/app_router.dart';
 import 'package:admin_mobile_application/services/secureStorage.dart';
+import 'package:admin_mobile_application/theme/app_colors.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -212,7 +213,11 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(
                               height: 16,
                             ),
-                            SizedBox(
+                            Container(
+                              decoration: BoxDecoration(
+                               borderRadius:BorderRadius.all(Radius.circular(12)),
+                               gradient: AppColors.primaryGradient, 
+                              ),
                               width: double.infinity,
                               child: FilledButton(
                                   style: ButtonStyle(
@@ -221,7 +226,8 @@ class _LoginPageState extends State<LoginPage> {
                                       vertical: 14,
                                     )),
                                     backgroundColor: WidgetStateProperty.all(
-                                        const Color(0Xff2556B9)),
+                                        Colors.transparent),
+                                        shadowColor: WidgetStatePropertyAll(Colors.transparent),
                                     shape: WidgetStateProperty.all(
                                         RoundedRectangleBorder(
                                             borderRadius:

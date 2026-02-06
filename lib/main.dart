@@ -2,6 +2,7 @@ import 'package:admin_mobile_application/adminController/appLockWrapper.dart';
 import 'package:admin_mobile_application/provider/adminProvider.dart';
 import 'package:admin_mobile_application/provider/authProvider.dart';
 import 'package:admin_mobile_application/routes/app_router.dart';
+import 'package:admin_mobile_application/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,9 +40,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      // theme: ThemeData(
-      //   scaffoldBackgroundColor: Colors.white,
-      // ), 
+      theme: ThemeData(
+        scaffoldBackgroundColor: AppColors.cardBg,
+      ), 
       title: 'Admin Management',
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter.config(),

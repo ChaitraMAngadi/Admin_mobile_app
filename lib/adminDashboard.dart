@@ -9,6 +9,7 @@ import 'package:admin_mobile_application/provider/adminProvider.dart';
 import 'package:admin_mobile_application/routes/app_router.dart';
 import 'package:admin_mobile_application/services/constants.dart';
 import 'package:admin_mobile_application/services/secureStorage.dart';
+import 'package:admin_mobile_application/theme/app_colors.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -78,93 +79,122 @@ Widget build(BuildContext context) {
   return Consumer<AdminPageProvider>(
     builder: (context, adminPageProvider, child) {
       return Scaffold(
-        appBar: AppBar(actions: [
+        appBar: AppBar(
+          actions: [
           IconButton(onPressed: (){
             openUrl("https://app.ppldoc.com/help");
           }, icon: Icon(Icons.help_outline))
         ],
           // automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xFF0857C0),
-          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: AppColors.cardBg,
+          iconTheme:  IconThemeData(color: AppColors.primary),
           centerTitle: true,
           title: const Text(
             "Admin Dashboard",
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: AppColors.primary,
+              fontSize: 24
             ),
           ),
           
         ),
         
         drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
+          child: Column(
             children: [
-              DrawerHeader(
-                decoration: const BoxDecoration(color: Color(0xFF0857C0)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
                   children: [
-                    const CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Colors.white,
-                      child: Icon(Icons.person, color: Colors.blue),
+                    DrawerHeader(
+                      decoration:  BoxDecoration(gradient: AppColors.primaryGradient),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const CircleAvatar(
+                            radius: 25,
+                            backgroundColor: AppColors.badgeBg,
+                            child: Icon(Icons.person, color: AppColors.primary),
+                          ),
+                          const SizedBox(height: 6),
+                          if (adminPageProvider.admindetailedprofile.isNotEmpty) ...[
+                            Text(
+                              "${adminPageProvider.admindetailedprofile.first['name']}",
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 4,),
+                            Text(
+                              "${adminPageProvider.admindetailedprofile.first['email']}",
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                             SizedBox(height: 4,),
+                            Text(
+                              "${adminPageProvider.admindetailedprofile.first['phone']}",
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ]
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 10),
-                    if (adminPageProvider.admindetailedprofile.isNotEmpty) ...[
-                      Text(
-                        "${adminPageProvider.admindetailedprofile.first['name']}",
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                    Card(
+                      child: ListTile(
+                        leading: const Icon(Icons.switch_account_rounded,
+                        color: AppColors.primaryDark,),
+                        title: const Text('Appointments',
+                        style: TextStyle(
+                          color: AppColors.primaryDark
+                        ),),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const TodaysAppointmentsPage()),
+                          );
+                        },
                       ),
-                      Text(
-                        "${adminPageProvider.admindetailedprofile.first['email']}",
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "${adminPageProvider.admindetailedprofile.first['phone']}",
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ]
+                    ),
+                    AppLockToggle(),
+                    
                   ],
                 ),
               ),
-              ListTile(
-                leading: const Icon(Icons.switch_account_rounded),
-                title: const Text('Appointments'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const TodaysAppointmentsPage()),
-                  );
-                },
-              ),
-              AppLockToggle(),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Logout'),
-                onTap: () async {
-                  await secureStorage.deleteSecureData('token');
-                  await secureStorage.deleteSecureData('phone');
-                   secureStorage.deleteSecureData("isLoggedIn");
-                    secureStorage.deleteSecureData("appLockEnabled");
-                    secureStorage.deleteSecureData("biometricEnabled");
-                  Constants.token =
-                      await secureStorage.readSecureData('token') ?? '';
-                      await secureStorage.readSecureData('phone') ?? '';
-
-                  context.router.replaceAll([LoginRoute()]);
-                },
-              ),
+              Container(
+                 decoration: BoxDecoration(
+                              gradient: AppColors.primaryGradient
+                             ),
+                child: Card(
+                   color: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                  child: ListTile(
+                          leading: const Icon(Icons.logout,
+                          color: Colors.white,),
+                          title: const Text('Logout',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),),
+                          onTap: () async {
+                            await secureStorage.deleteSecureData('token');
+                            await secureStorage.deleteSecureData('phone');
+                             secureStorage.deleteSecureData("isLoggedIn");
+                              secureStorage.deleteSecureData("appLockEnabled");
+                              secureStorage.deleteSecureData("biometricEnabled");
+                            Constants.token =
+                                await secureStorage.readSecureData('token') ?? '';
+                                await secureStorage.readSecureData('phone') ?? '';
+                    
+                            context.router.replaceAll([LoginRoute()]);
+                          },
+                        ),
+                ),
+              )
             ],
           ),
         ),
@@ -189,14 +219,14 @@ Widget build(BuildContext context) {
             //   label: 'Profile',
             // ),
           ],
-          backgroundColor: const Color(0xFF0857C0),
+          backgroundColor:  Colors.white,
           currentIndex: _selectedIndex,
           iconSize: 30,
           selectedLabelStyle: const TextStyle(fontSize: 16),
           unselectedLabelStyle: const TextStyle(fontSize: 16),
           showUnselectedLabels: true,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white54,
+          selectedItemColor: AppColors.primary,
+          unselectedItemColor: Colors.grey.shade600,
           onTap: (index) => setState(() => _selectedIndex = index),
         ),
       );

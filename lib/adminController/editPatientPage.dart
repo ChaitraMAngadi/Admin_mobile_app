@@ -1,4 +1,5 @@
 import 'package:admin_mobile_application/provider/adminProvider.dart';
+import 'package:admin_mobile_application/theme/app_colors.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -171,12 +172,23 @@ class _EditPatientAdminPageState extends State<EditPatientAdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.badgeBg,
         appBar: AppBar(
+           leading: IconButton(onPressed: (){
+            Navigator.pop(context);
+          }, icon: Icon(Icons.arrow_back,
+          color: Colors.white,)),
+           flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: AppColors.primaryGradient,
+          ),
+        ),
           title: const Text(
             "Edit Patient",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
+              color: Colors.white
             ),
           ),
         ),
@@ -398,14 +410,19 @@ class _EditPatientAdminPageState extends State<EditPatientAdminPage> {
                             //   ),
                             // ),
                             const SizedBox(height: 32),
-                            SizedBox(
+                            Container(
                               width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(12)),
+                                gradient: AppColors.primaryGradient,
+                              ),
                               child: ElevatedButton(
                                 style:  ButtonStyle(
                                   padding: const WidgetStatePropertyAll(
                                       EdgeInsets.symmetric(vertical: 14)),
                                   backgroundColor: adminprovider.editingpatient ? const WidgetStatePropertyAll(Colors.grey):
-                                      const WidgetStatePropertyAll(Color(0XFF0857C0)),
+                                      const WidgetStatePropertyAll(Colors.transparent),
+                                      shadowColor: WidgetStatePropertyAll(Colors.transparent),
                                   shape: const WidgetStatePropertyAll(
                                     RoundedRectangleBorder(
                                       borderRadius:

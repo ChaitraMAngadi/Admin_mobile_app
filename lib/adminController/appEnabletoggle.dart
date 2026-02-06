@@ -1,4 +1,5 @@
 import 'package:admin_mobile_application/services/secureStorage.dart';
+import 'package:admin_mobile_application/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppLockToggle extends StatefulWidget {
@@ -26,18 +27,31 @@ class _AppLockToggleState extends State<AppLockToggle> {
 
   @override
   Widget build(BuildContext context) {
-    return SwitchListTile(
-      title: const Text("App Lock"),
-      subtitle:
-          const Text("Secure app using phone lock"),
-      value: enabled,
-      onChanged: (value) async {
-        setState(() => enabled = value);
-        await secureStorage.writeSecureData(
-          "appLockEnabled",
-          value.toString(),
-        );
-      },
+    return Card(
+      child: SwitchListTile(
+        activeTrackColor: AppColors.primaryDark,
+        secondary: const Icon(
+          Icons.lock_outline,
+          color: AppColors.primaryDark,
+        ),  
+        title:  Text("App Lock",
+        style: TextStyle(
+          color: AppColors.primaryDark
+        ),),
+        subtitle:
+            const Text("Secure app using phone lock",
+            style: TextStyle(
+              color: AppColors.primary
+            ),),
+        value: enabled,
+        onChanged: (value) async {
+          setState(() => enabled = value);
+          await secureStorage.writeSecureData(
+            "appLockEnabled",
+            value.toString(),
+          );
+        },
+      ),
     );
   }
 }

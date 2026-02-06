@@ -1,4 +1,5 @@
 import 'package:admin_mobile_application/provider/adminProvider.dart';
+import 'package:admin_mobile_application/theme/app_colors.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -185,10 +186,21 @@ class _SlotPageState extends State<SlotPage> {
   },
       child: Scaffold(
         appBar: AppBar(
+           flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: AppColors.primaryGradient,
+          ),
+        ),
+        leading: IconButton(onPressed: (){
+          Navigator.pop(context);
+        }, icon: Icon(Icons.arrow_back,
+        color: Colors.white,)),
+        centerTitle: false,
           title: const Text(
             "Doctor Appointment Management",
             style: TextStyle(
-              color: Color(0xFF0857C0),
+              fontSize: 20,
+              color:Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -204,297 +216,353 @@ class _SlotPageState extends State<SlotPage> {
                 ),
                 child: Column(
                   children: [
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Doctor: ${p.doctorname}",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
+                    Container(
+
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(12),bottom: Radius.circular(22)),
+                        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ]
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 4,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+                              gradient: AppColors.primaryGradient,
                             ),
-                            const SizedBox(height: 6),
-                            const Text(
-                              'Login Time',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 4),
-                            TextField(
-                              readOnly: true,
-                              cursorColor: Colors.grey,
-                              controller: loginController,
-                              enabled: !hasBookedSlots,
-                              decoration: InputDecoration(
-                                focusColor: Colors.grey,
-                                border: OutlineInputBorder(),
-                                hintText: 'Login Time',
-                                suffix:hasBookedSlots?null: GestureDetector(
-                                  onTap: () async {
-                                    TimeOfDay? pickedTime = await showTimePicker(
-                                      context: context,
-                                      initialTime: selectedTime,
-                                    );
-      
-                                    if (pickedTime != null) {
-                                      setState(() {
-                                        selectedTime = pickedTime;
-                                        loginController.text = formatted24(pickedTime);
-                                      });
-                                    }
-                                  },
-                                  child: Icon(
-                                    Icons.timer_outlined,
-                                    color: Color(0xFF0857C0),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Doctor: ${p.doctorname}",
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
                                   ),
                                 ),
-                              ),
-      
-                              // decoration: InputDecoration(labelText: "Login Time (HH:MM)"),
-                            ),
-                            const SizedBox(height: 6),
-                            const Text(
-                              'Logout Time',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 4),
-                            TextField(
-                              readOnly: true,
-                              cursorColor: Color(0xFF0857C0),
-                              controller: logoutController,
-                              enabled: !hasBookedSlots,
-                              decoration: InputDecoration(
-                                focusColor: Colors.grey,
-                                // enabledBorder: OutlineInputBorder(),
-                                border: OutlineInputBorder(),
-                                hintText: 'Logout Time',
-                                suffix:hasBookedSlots? null: GestureDetector(
-                                  onTap: () async {
-                                    TimeOfDay? pickedTime = await showTimePicker(
-                                      context: context,
-                                      initialTime: selectedTime,
-                                    );
-      
-                                    if (pickedTime != null) {
-                                      setState(() {
-                                        selectedTime = pickedTime;
-                                        logoutController.text = formatted24(
-                                          pickedTime,
+                                const SizedBox(height: 6),
+                                const Text(
+                                  'Login Time',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 4),
+                                TextField(
+                                  readOnly: true,
+                                  cursorColor: Colors.grey,
+                                  controller: loginController,
+                                  enabled: !hasBookedSlots,
+                                  decoration: InputDecoration(
+                                    focusColor: Colors.grey,
+                                    border: OutlineInputBorder(),
+                                    hintText: 'Login Time',
+                                    suffix:hasBookedSlots?null: GestureDetector(
+                                      onTap: () async {
+                                        TimeOfDay? pickedTime = await showTimePicker(
+                                         
+                                          context: context,
+                                          initialTime: selectedTime,
                                         );
-                                        // ✅ 24-hour format
-                                      });
-                                    }
+                                
+                                        if (pickedTime != null) {
+                                          setState(() {
+                                            selectedTime = pickedTime;
+                                            loginController.text = formatted24(pickedTime);
+                                          });
+                                        }
+                                      },
+                                      child: Icon(
+                                        Icons.timer_outlined,
+                                        color: AppColors.primaryDark,
+                                      ),
+                                    ),
+                                  ),
+                                
+                                  // decoration: InputDecoration(labelText: "Login Time (HH:MM)"),
+                                ),
+                                const SizedBox(height: 6),
+                                const Text(
+                                  'Logout Time',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 4),
+                                TextField(
+                                  readOnly: true,
+                                  cursorColor: Colors.grey,
+                                  controller: logoutController,
+                                  enabled: !hasBookedSlots,
+                                  decoration: InputDecoration(
+                                    focusColor: Colors.grey,
+                                    // enabledBorder: OutlineInputBorder(),
+                                    border: OutlineInputBorder(),
+                                    hintText: 'Logout Time',
+                                    suffix:hasBookedSlots? null: GestureDetector(
+                                      onTap: () async {
+                                        TimeOfDay? pickedTime = await showTimePicker(
+                                          context: context,
+                                          initialTime: selectedTime,
+                                        );
+                                
+                                        if (pickedTime != null) {
+                                          setState(() {
+                                            selectedTime = pickedTime;
+                                            logoutController.text = formatted24(
+                                              pickedTime,
+                                            );
+                                            // ✅ 24-hour format
+                                          });
+                                        }
+                                      },
+                                      child: Icon(
+                                        Icons.timer_outlined,
+                                        color: AppColors.primaryDark,
+                                      ),
+                                    ),
+                                  ),
+                                
+                                  // decoration: InputDecoration(labelText: "Leave Time (HH:MM)"),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  'Time Frame',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 4),
+                                DropdownButtonFormField<String>(
+                                  
+                                  value: selectedDurationText,
+                                  
+                                  decoration: InputDecoration(
+                                    hintText: 'Select Time Duration',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  items: durationToLabel.values.map((label) {
+                                    return DropdownMenuItem(
+                                      value: label,
+                                      child: Text(label),
+                                    );
+                                  }).toList(),
+                                  onChanged:hasBookedSlots?null: (newValue) {
+                                    setState(() {
+                                      selectedDurationText = newValue;
+                                
+                                      // ✅ Convert "30 Minutes" → "30"
+                                      durationController.text =
+                                          labelToDuration[newValue!].toString();
+                                    });
                                   },
-                                  child: Icon(
-                                    Icons.timer_outlined,
-                                    color: Color(0xFF0857C0),
+                                ),
+                                SizedBox(height: 12),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                                    gradient:!hasBookedSlots? AppColors.primaryGradient:LinearGradient(colors: [Colors.grey.shade300, Colors.grey.shade300]),
                                   ),
-                                ),
-                              ),
-      
-                              // decoration: InputDecoration(labelText: "Leave Time (HH:MM)"),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              'Time Frame',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 4),
-                            DropdownButtonFormField<String>(
-                              
-                              value: selectedDurationText,
-                              
-                              decoration: InputDecoration(
-                                hintText: 'Select Time Duration',
-                                border: OutlineInputBorder(),
-                              ),
-                              items: durationToLabel.values.map((label) {
-                                return DropdownMenuItem(
-                                  value: label,
-                                  child: Text(label),
-                                );
-                              }).toList(),
-                              onChanged:hasBookedSlots?null: (newValue) {
-                                setState(() {
-                                  selectedDurationText = newValue;
-      
-                                  // ✅ Convert "30 Minutes" → "30"
-                                  durationController.text =
-                                      labelToDuration[newValue!].toString();
-                                });
-                              },
-                            ),
-                            SizedBox(height: 12),
-                            ElevatedButton(
-                              style:  ButtonStyle(
-                                padding: WidgetStatePropertyAll(
-                                  EdgeInsets.symmetric(
-                                    vertical: 14,
-                                    horizontal: 20,
-                                  ),
-                                ),
-                                backgroundColor:hasBookedSlots?WidgetStatePropertyAll(
-                                  Colors.grey.shade400,
-                                ): WidgetStatePropertyAll(
-                                  Color(0XFF0857C0),
-                                ),
-                                shape: WidgetStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(14),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              onPressed:hasBookedSlots? null: () async {
-                                if (loginController.text.trim().isEmpty ||
-                                    logoutController.text.trim().isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        "Please select both Login and Logout times.",
+                                  child: ElevatedButton(
+                                    style:  ButtonStyle(
+                                      padding: WidgetStatePropertyAll(
+                                        EdgeInsets.symmetric(
+                                          vertical: 14,
+                                          horizontal: 20,
+                                        ),
                                       ),
-                                      backgroundColor: Colors.redAccent,
-                                    ),
-                                  );
-                                  return;
-                                }
-      
-                                // ✅ Parse both times to compare
-                                final loginParts = loginController.text.split(
-                                  ":",
-                                );
-                                final logoutParts = logoutController.text.split(
-                                  ":",
-                                );
-      
-                                if (loginParts.length < 2 ||
-                                    logoutParts.length < 2) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Invalid time format."),
-                                      backgroundColor: Colors.redAccent,
-                                    ),
-                                  );
-                                  return;
-                                }
-      
-                                final loginTime = DateTime(
-                                  2024,
-                                  1,
-                                  1,
-                                  int.parse(loginParts[0]),
-                                  int.parse(loginParts[1]),
-                                );
-      
-                                final logoutTime = DateTime(
-                                  2024,
-                                  1,
-                                  1,
-                                  int.parse(logoutParts[0]),
-                                  int.parse(logoutParts[1]),
-                                );
-      
-                                // ✅ Check condition: login must be earlier than logout
-                                if (logoutTime.isBefore(loginTime) ||
-                                    logoutTime.isAtSameMomentAs(loginTime)) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        "Logout time must be after Login time.",
+                                      backgroundColor:hasBookedSlots?WidgetStatePropertyAll(
+                                       Colors.transparent,
+                                      ): WidgetStatePropertyAll(
+                                        Colors.transparent,
                                       ),
-                                      backgroundColor: Colors.redAccent,
+                                      shadowColor: WidgetStatePropertyAll(Colors.transparent),
+                                      shape: WidgetStatePropertyAll(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(14),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  );
-                                  return;
-                                }
-                                // int duration = int.parse(durationController.text);
-                                await p.updateDoctorTiming(
-                                  widget.patientId,
-                                  loginController.text.trim(),
-                                  logoutController.text.trim(),
-                                  int.parse(durationController.text.trim()),
-                                  selectedDate,
-                                  context,
-                                );
-      
-                                // Implement time change logic
-                              },
-                              child:  Text(
-                                "Update Time",
-                                style: TextStyle(
-                                  color:hasBookedSlots?Colors.grey.shade800: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                    onPressed:hasBookedSlots? null: () async {
+                                      if (loginController.text.trim().isEmpty ||
+                                          logoutController.text.trim().isEmpty) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "Please select both Login and Logout times.",
+                                            ),
+                                            backgroundColor: Colors.redAccent,
+                                          ),
+                                        );
+                                        return;
+                                      }
+                                  
+                                      // ✅ Parse both times to compare
+                                      final loginParts = loginController.text.split(
+                                        ":",
+                                      );
+                                      final logoutParts = logoutController.text.split(
+                                        ":",
+                                      );
+                                  
+                                      if (loginParts.length < 2 ||
+                                          logoutParts.length < 2) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text("Invalid time format."),
+                                            backgroundColor: Colors.redAccent,
+                                          ),
+                                        );
+                                        return;
+                                      }
+                                  
+                                      final loginTime = DateTime(
+                                        2024,
+                                        1,
+                                        1,
+                                        int.parse(loginParts[0]),
+                                        int.parse(loginParts[1]),
+                                      );
+                                  
+                                      final logoutTime = DateTime(
+                                        2024,
+                                        1,
+                                        1,
+                                        int.parse(logoutParts[0]),
+                                        int.parse(logoutParts[1]),
+                                      );
+                                  
+                                      // ✅ Check condition: login must be earlier than logout
+                                      if (logoutTime.isBefore(loginTime) ||
+                                          logoutTime.isAtSameMomentAs(loginTime)) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "Logout time must be after Login time.",
+                                            ),
+                                            backgroundColor: Colors.redAccent,
+                                          ),
+                                        );
+                                        return;
+                                      }
+                                      // int duration = int.parse(durationController.text);
+                                      await p.updateDoctorTiming(
+                                        widget.patientId,
+                                        loginController.text.trim(),
+                                        logoutController.text.trim(),
+                                        int.parse(durationController.text.trim()),
+                                        selectedDate,
+                                        context,
+                                      );
+                                  
+                                      // Implement time change logic
+                                    },
+                                    child:  Text(
+                                      "Update Time",
+                                      style: TextStyle(
+                                        color:hasBookedSlots?Colors.grey.shade800: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                if(hasBookedSlots)
+                                SizedBox(height: 8,),
+                                if(hasBookedSlots)
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 16,
+                                  vertical: 8,),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(16,)),
+                                    color: Colors.amber.shade50,
+                                  ),
+                                  child: Text("⚠️ Timing updates are disabled because there are existing bookings on this date. Please cancel all bookings first to modify the schedule.",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.amberAccent.shade700,
+                                  ),),
+                                )
+                              ],
                             ),
-                            if(hasBookedSlots)
-                            SizedBox(height: 8,),
-                            if(hasBookedSlots)
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 16,
-                              vertical: 8,),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(16,)),
-                                color: Colors.amber.shade50,
-                              ),
-                              child: Text("⚠️ Timing updates are disabled because there are existing bookings on this date. Please cancel all bookings first to modify the schedule.",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.amberAccent.shade700,
-                              ),),
-                            )
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
 
                     SizedBox(height: 20),
                     
-                    Card(
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(12),bottom: Radius.circular(22)),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          )
+                        ]
+                      ),
                       
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Select Appointment Date",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),),
-                            SizedBox(height: 6,),
-                            TextFormField(
-                                      controller: dateController,
-                                      readOnly: true,
-                                      decoration: InputDecoration(
-                                        suffixIcon: Padding(
-                                          padding: const EdgeInsets.only(right: 16),
-                                          child: GestureDetector(
-                                              onTap: _openCalendar,
-                                              child:
-                                                  Icon(Icons.calendar_month_outlined)),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 4,
+                            decoration: BoxDecoration(
+                              gradient: AppColors.primaryGradient,
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(22))
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Select Appointment Date",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primaryDark
+                                ),),
+                                SizedBox(height: 6,),
+                                TextFormField(
+                                          controller: dateController,
+                                          readOnly: true,
+                                          decoration: InputDecoration(
+                                            suffixIcon: Padding(
+                                              padding: const EdgeInsets.only(right: 16),
+                                              child: GestureDetector(
+                                                  onTap: _openCalendar,
+                                                  child:
+                                                      Icon(Icons.calendar_month_outlined)),
+                                            ),
+                                            border: OutlineInputBorder(),
+                                            hintText: 'Enter date',
+                                          ),
+                                          validator: (value) {
+                                            if (value == null || value.isEmpty) {
+                                              return 'Please enter date';
+                                            }
+                                            return null;
+                                          },
                                         ),
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Enter date',
-                                      ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter date';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 6,
-                                    ),
-                           
-                          ],
-                        ),
+                                        SizedBox(
+                                          height: 6,
+                                        ),
+                               
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     // dateSelector(p),
@@ -526,7 +594,7 @@ class _SlotPageState extends State<SlotPage> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.light(
-              primary: Colors.blue, // Header color
+              primary: AppColors.primary, // Header color
               onPrimary: Colors.white, // Header text color
               onSurface: Colors.black, // Body text color
             ),
@@ -656,9 +724,10 @@ Widget slotGrid(AdminPageProvider p) {
           child: Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: slot.isBooked ? Colors.red : Colors.white,
+              // color: slot.isBooked ? Colors.red : Colors.white,
+              gradient: slot.isBooked? AppColors.primaryGradient:LinearGradient(colors: [Colors.white, Colors.white]),
               border: Border.all(
-                color: slot.isBooked ? Colors.red : Colors.green,
+                color: slot.isBooked ? AppColors.secondary : Colors.green,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
@@ -702,6 +771,7 @@ String formatDate(String date) {
     showDialog(
       context: context,
       builder: (_) => Dialog(
+        backgroundColor: Colors.white,
         insetPadding: EdgeInsets.all(16),
         child: Form(
           key: formkey,
@@ -719,11 +789,13 @@ String formatDate(String date) {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: AppColors.primaryDark
                       ),
                     ),
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: Icon(Icons.close),
+                      icon: Icon(Icons.close,
+                      color: AppColors.primaryDark,),
                     ),
                   ],
                 ),
@@ -804,11 +876,17 @@ String formatDate(String date) {
                   ),
                 ),
                 SizedBox(height: 16),
-                SizedBox(
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    gradient: AppColors.primaryGradient,
+                  ),
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF0857C0),
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -851,6 +929,7 @@ String formatDate(String date) {
     showDialog(
       context: context,
       builder: (_) => Dialog(
+        backgroundColor: Colors.white,
         insetPadding: EdgeInsets.all(16),
 
         child: Padding(
@@ -875,7 +954,7 @@ String formatDate(String date) {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.red.shade50,
+                  color: AppColors.badgeBg,
                   borderRadius: const BorderRadius.all(Radius.circular(16)),
                 ),
                 child: Column(
@@ -892,38 +971,44 @@ String formatDate(String date) {
                             fontSize: 16,
                           ),
                         ),
-                        ElevatedButton(
-                          style: const ButtonStyle(
-                            padding: WidgetStatePropertyAll(
-                              EdgeInsets.symmetric(
-                                vertical: 14,
-                                horizontal: 20,
+                        Container(
+                          decoration: BoxDecoration(
+                            gradient: AppColors.primaryGradient,borderRadius: BorderRadius.all(Radius.circular(12))
+                          ),
+                          child: ElevatedButton(
+                            style: const ButtonStyle(
+                              padding: WidgetStatePropertyAll(
+                                EdgeInsets.symmetric(
+                                  vertical: 14,
+                                  horizontal: 20,
+                                ),
                               ),
-                            ),
-                            backgroundColor: WidgetStatePropertyAll(Colors.red),
-                            shape: WidgetStatePropertyAll(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(14),
+                              backgroundColor: WidgetStatePropertyAll(Colors.transparent),
+                              shadowColor: WidgetStatePropertyAll(Colors.transparent),
+                              shape: WidgetStatePropertyAll(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(14),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          onPressed: () async {
-                            await p.deleteSlot(
-                              widget.patientId,
-                              slot,
-                              selectedDate,
-                              context,
-                            );
-                            Navigator.pop(context);
-                            p.loadByDate(selectedDate, widget.patientId);
-                          },
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                            onPressed: () async {
+                              await p.deleteSlot(
+                                widget.patientId,
+                                slot,
+                                selectedDate,
+                                context,
+                              );
+                              Navigator.pop(context);
+                              p.loadByDate(selectedDate, widget.patientId);
+                            },
+                            child: const Text(
+                              'Cancel',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),

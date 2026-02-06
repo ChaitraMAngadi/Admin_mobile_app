@@ -2,6 +2,7 @@
 import 'package:admin_mobile_application/provider/adminProvider.dart';
 import 'package:admin_mobile_application/services/constants.dart';
 import 'package:admin_mobile_application/services/secureStorage.dart';
+import 'package:admin_mobile_application/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -200,15 +201,49 @@ class _TodaysAppointmentsPageState extends State<TodaysAppointmentsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      backgroundColor: AppColors.softPinkish,
+      // appBar: AppBar(
 
-        title: Text('Todays Appointments',
+      //   title: Text('Todays Appointments',
+      //   style: TextStyle(
+      //     fontSize: 20,
+      //     fontWeight: FontWeight.bold,
+      //   ),),
+      //   centerTitle: true,
+      // ),
+
+      appBar: AppBar(
+        leading: IconButton(onPressed: (){
+          Navigator.pop(context);
+        }, icon: Icon(Icons.arrow_back,color: Colors.white,)),
+  flexibleSpace: Container(
+    decoration: BoxDecoration(
+      gradient: AppColors.primaryGradient,
+    ),
+  ),
+  elevation: 0,
+  title: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const Text(
+        "Today's Appointments",
         style: TextStyle(
+          color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.bold,
-        ),),
-        centerTitle: true,
+        ),
       ),
+      Text(
+        formattedDate,
+        style: const TextStyle(
+          fontSize: 12,
+          color: Colors.white,
+        ),
+      ),
+    ],
+  ),
+),
+
         body: RefreshIndicator(
       onRefresh: _handleRefresh,
       child: Consumer<AdminPageProvider>(
@@ -239,21 +274,17 @@ class _TodaysAppointmentsPageState extends State<TodaysAppointmentsPage> {
                                     Row(
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
-                                                          Text(formattedDate,
-                                                          style: TextStyle(
-                                                           color: Colors.grey.shade700,
-                                                           fontSize: 13,
-                                                           fontWeight: FontWeight.bold 
-                                                          ),),
-                                                          Container(padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10,),
+                                                          Text(""),
+                                                          Container(padding: EdgeInsets.symmetric(horizontal: 12, vertical: 14,),
                                                             decoration: BoxDecoration(
-                                                              color: Colors.purple.shade100,
+                                                              // color: Colors.purple.shade100,
+                                                              gradient: AppColors.primaryGradient,
                                                               borderRadius: BorderRadius.all(Radius.circular(16),)
                                                             ),
                                                             child: Text("${adminPageProvider.filteredtodaysappointments.length} APPOINTMENTS",
                                                             style: TextStyle(fontWeight: FontWeight.bold,
                                                             fontSize: 13,
-                                                            color: Colors.purple.shade800,),),
+                                                            color: Colors.white,),),
                                                           )
                                                         ],
                                                       ),
@@ -338,6 +369,120 @@ class _TodaysAppointmentsPageState extends State<TodaysAppointmentsPage> {
   }
 }
 
+// class TodaysAppointmentModel extends StatelessWidget {
+//   const TodaysAppointmentModel({
+//     super.key,
+//     required this.patientname,
+//     required this.patientmobile,
+//     required this.starttime,
+//     required this.endtime,
+//     required this.doctorname,
+//   });
+//   final String patientname;
+//   final String patientmobile;
+//   final String starttime;
+//   final String endtime;
+//   final String doctorname;
+//   // final bool isreport;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.only(
+//         bottom: 16,
+//         left: 16,
+//         right: 16,
+//       ),
+//       child: ListTile(
+//         shape: const RoundedRectangleBorder(
+//             borderRadius: BorderRadius.all(Radius.circular(8))),
+//         tileColor: Colors.grey.shade100,
+//         title: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Row(
+//               children: [
+//                 const Text(
+//                   'Name: ',
+//                   style: TextStyle(
+//                     fontSize: 15,
+//                     fontWeight: FontWeight.bold,
+//                     overflow: TextOverflow.ellipsis,
+//                   ),
+//                 ),
+//                 Text(
+//                   patientname,
+//                   style: const TextStyle(
+//                     fontSize: 15,
+//                     overflow: TextOverflow.ellipsis,
+//                   ),
+//                 ),
+//               ],
+//             ),
+//             Row(
+//               children: [
+//                 const Text(
+//                   'Mobile: ',
+//                   style: TextStyle(
+//                     fontSize: 15,
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//                 Text(
+//                   patientmobile,
+//                   style: const TextStyle(
+//                     fontSize: 15,
+//                     overflow: TextOverflow.ellipsis,
+//                   ),
+//                 ),
+//               ],
+//             ),
+//             const SizedBox(
+//               height: 6,
+//             ),
+//             Row(
+//               children: [
+//                 const Text(
+//                   'Doctor: ',
+//                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+//                 ),
+//                 Text(
+//                   doctorname,
+//                   style: const TextStyle(
+//                     fontSize: 15,
+//                     overflow: TextOverflow.ellipsis,
+//                   ),
+//                 ),
+//               ],
+//             ),
+//             const SizedBox(
+//               height: 16,
+//             ),
+//             Container(
+//               padding: EdgeInsets.all(10),
+//               decoration: BoxDecoration(
+//                   borderRadius: BorderRadius.all(Radius.circular(16)),
+//                   color: Colors.blue.shade100),
+//               child: Text(
+//                 '$starttime - $endtime',
+//                 style: TextStyle(
+//                   fontSize: 16,
+//                   fontWeight: FontWeight.bold,
+//                   color: Colors.blue.shade800,
+//                 ),
+//               ),
+//             ),
+//             const SizedBox(
+//               height: 16,
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
 class TodaysAppointmentModel extends StatelessWidget {
   const TodaysAppointmentModel({
     super.key,
@@ -347,106 +492,188 @@ class TodaysAppointmentModel extends StatelessWidget {
     required this.endtime,
     required this.doctorname,
   });
+
   final String patientname;
   final String patientmobile;
   final String starttime;
   final String endtime;
   final String doctorname;
-  // final bool isreport;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 16,
-        left: 16,
-        right: 16,
-      ),
-      child: ListTile(
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8))),
-        tileColor: Colors.grey.shade100,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(12), bottom: Radius.circular(22)),
+         
+        ),
+        child: Column(
           children: [
-            Row(
-              children: [
-                const Text(
-                  'Name: ',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Text(
-                  patientname,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                const Text(
-                  'Mobile: ',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  patientmobile,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 6,
-            ),
-            Row(
-              children: [
-                const Text(
-                  'Doctor: ',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  doctorname,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
             Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                  color: Colors.blue.shade100),
-              child: Text(
-                '$starttime - $endtime',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue.shade800,
-                ),
+              height: 4,
+              decoration:BoxDecoration(
+                gradient: AppColors.primaryGradient,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(22))
               ),
             ),
-            const SizedBox(
-              height: 16,
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: const Color(0xffF7FAFC),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    
+                      Row(
+                        children: [
+                          Icon(Icons.person_outline, size: 18, color: Colors.grey),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    "PATIENT NAME",
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                        ],
+                      ),
+        const SizedBox(height: 8),
+        Text(
+          patientname,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+          overflow: TextOverflow.ellipsis,
+        ),
+                    const Divider(),
+
+                    Row(
+                      children: [
+                        Icon(Icons.phone_outlined, size: 18, color: Colors.grey),
+                                const SizedBox(width: 8),
+                                Text(
+                                  "MOBILE",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                      ],
+                    ),
+        const SizedBox(height: 8),
+        Text(
+          patientmobile,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+          overflow: TextOverflow.ellipsis,
+        ),
+            
+                    
+                    const Divider(),
+            
+                    Row(
+                      children: [
+                        const Icon(Icons.access_time,
+                            size: 18, color: Colors.grey),
+                        const SizedBox(width: 8),
+                        const Text(
+                          "TIME SLOT",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.grey,
+                          ),
+                        ),
+                       
+                        
+                      ],
+                    ),
+                     const SizedBox(height: 12),
+                    Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            gradient: AppColors.primaryGradient,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            "$starttime - $endtime",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+            
+                    const Divider(),
+                    const SizedBox(height: 4),
+            
+                    const Text(
+                      "DOCTOR",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      doctorname,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _rowItem({
+    required IconData icon,
+    required String title,
+    required String value,
+  }) {
+    return Column(
+      children: [
+        Icon(icon, size: 18, color: Colors.grey),
+        const SizedBox(width: 8),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
     );
   }
 }

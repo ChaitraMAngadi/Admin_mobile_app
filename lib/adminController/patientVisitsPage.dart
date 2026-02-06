@@ -1,6 +1,7 @@
 import 'package:admin_mobile_application/provider/adminProvider.dart';
 import 'package:admin_mobile_application/services/constants.dart';
 import 'package:admin_mobile_application/services/secureStorage.dart';
+import 'package:admin_mobile_application/theme/app_colors.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -122,9 +123,19 @@ class _PatientAdminOutvisitsPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+         leading: IconButton(onPressed: (){
+            Navigator.pop(context);
+          }, icon: Icon(Icons.arrow_back,
+          color: Colors.white,)),
+             flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: AppColors.primaryGradient,
+          ),
+        ),
         title: const Text(
           "Patient Visits",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,
+          color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -139,38 +150,47 @@ class _PatientAdminOutvisitsPageState
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 16, top: 8),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return RegisterVisitModel(
-                                patientId: widget.patientId,
-                                alldoctors: adminprovider.alldoctors,
-                              );
-                            },
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0857C0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 10),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: AppColors.primaryGradient,
+                          borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                          )
                         ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.person_add_alt_1_outlined,
-                                color: Colors.white),
-                            SizedBox(width: 6),
-                            Text(
-                              "Register Visits",
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return RegisterVisitModel(
+                                  patientId: widget.patientId,
+                                  alldoctors: adminprovider.alldoctors,
+                                );
+                              },
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:  Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                          ],
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 10),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.person_add_alt_1_outlined,
+                                  color: Colors.white),
+                              SizedBox(width: 6),
+                              Text(
+                                "Register Visits",
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.white),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -215,6 +235,7 @@ class _PatientAdminOutvisitsPageState
                                           visit["associatedDoctor"] ?? {};
 
                                       return VisitModel(
+                                         index: index,
                                         cheifcomplaint:
                                             visit["chief_complaint"] ?? "N/A",
                                         visitdate:
@@ -226,6 +247,7 @@ class _PatientAdminOutvisitsPageState
                                             context: context,
                                             builder: (context) {
                                               return VisitViewModel(
+                                                creationtime: formatDate(visit["createdAt"])??"",
                                                 cheifcomplaint:
                                                     visit["chief_complaint"] ??
                                                         "",
@@ -275,114 +297,498 @@ class _PatientAdminOutvisitsPageState
 
 
 
+// class VisitModel extends StatelessWidget {
+//   const VisitModel({
+//     super.key,
+//     required this.cheifcomplaint,
+//     required this.visitdate,
+//     // required this.supportingimages,
+//     // required this.createdtime,
+//     // required this.supportingimaesontap,
+//     required this.viewontap,
+//     required this.complaintId,
+//     required this.patientId, required this.isDiagnosed,
+//   });
+
+//   final String cheifcomplaint;
+//   final String visitdate;
+//   // final List<dynamic> supportingimages;
+//   final String complaintId;
+//   final String patientId;
+//   final bool isDiagnosed;
+
+//   // final String createdtime;
+//   final VoidCallback viewontap;
+
+//   @override
+//   Widget build(BuildContext context) {
+   
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(
+//         horizontal: 16
+//       ),
+//       child: Card(
+//         child: Padding(
+//           padding: const EdgeInsets.only(
+//             left: 16,
+//             right: 16,
+//             bottom: 16,
+//             top: 16,
+//           ),
+//           child: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Row(
+//                     children: [
+//                       Text(
+//                         "Visit Date:",
+//                         style: TextStyle(
+//                           fontSize: 14,
+//                           color: Colors.black,
+//                         ),
+//                       ),
+//                       Text(
+//                         visitdate,
+//                         style: TextStyle(
+//                             fontSize: 14, color: Colors.grey.shade700),
+//                         overflow: TextOverflow.ellipsis,
+//                       ),
+//                     ],
+//                   ),
+//                   IconButton(
+//                       onPressed: viewontap,
+//                       icon: const Icon(
+//                         Icons.remove_red_eye,
+//                         color: Color(0Xff2556B9),
+//                       )),
+                 
+//                 ],
+//               ),
+//               const SizedBox(
+//                 height: 4,
+//               ),
+//               const Text(
+//                 "Cheif-Complaint :",
+//                 style: TextStyle(
+//                   fontSize: 16,
+//                   fontWeight: FontWeight.bold,
+//                   color: Colors.black,
+//                 ),
+//                 overflow: TextOverflow.ellipsis,
+//               ),
+//               const SizedBox(
+//                 height: 4,
+//               ),
+//               Text(
+//                 cheifcomplaint,
+//                 style: const TextStyle(fontSize: 16),
+//                 overflow: TextOverflow.ellipsis,
+//               ),
+//               const SizedBox(
+//                 height: 4,
+//               ),
+//                Text(isDiagnosed? 'Visit Completed': 'Not Visited',
+//                  style: TextStyle(
+//                   fontSize: 16,
+//                   fontWeight: FontWeight.bold,
+//                   color: isDiagnosed ? Colors.green.shade700 : Colors.red.shade700,
+//                  ),
+//                  )
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 class VisitModel extends StatelessWidget {
   const VisitModel({
     super.key,
     required this.cheifcomplaint,
     required this.visitdate,
-    // required this.supportingimages,
-    // required this.createdtime,
-    // required this.supportingimaesontap,
     required this.viewontap,
     required this.complaintId,
-    required this.patientId, required this.isDiagnosed,
+    required this.patientId,
+    required this.isDiagnosed,
+    required this.index,
   });
 
   final String cheifcomplaint;
   final String visitdate;
-  // final List<dynamic> supportingimages;
   final String complaintId;
   final String patientId;
   final bool isDiagnosed;
-
-  // final String createdtime;
+  final int index;
   final VoidCallback viewontap;
 
   @override
   Widget build(BuildContext context) {
-   
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xffF8FBFF),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isDiagnosed ? Colors.green.shade200 : Colors.red.shade200,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          )
+        ],
       ),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 16,
-            right: 16,
-            bottom: 16,
-            top: 16,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// 🔹 Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        "Visit Date:",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Text(
-                        visitdate,
-                        style: TextStyle(
-                            fontSize: 14, color: Colors.grey.shade700),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                  Text(
+                    "VISIT NUMBER",
+                    style: TextStyle(
+                      fontSize: 12,
+                      letterSpacing: 1,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  IconButton(
-                      onPressed: viewontap,
-                      icon: const Icon(
-                        Icons.remove_red_eye,
-                        color: Color(0Xff2556B9),
-                      )),
-                 
+                  const SizedBox(height: 4),
+
+          Text(
+            "#${index + 1}",
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryDark,
+            ),
+          ),
                 ],
               ),
-              const SizedBox(
-                height: 4,
-              ),
-              const Text(
-                "Cheif-Complaint :",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              InkWell(
+                onTap: viewontap,
+                child: Container(
+                  padding: const EdgeInsets.all(9),
+                  decoration: BoxDecoration(
+                    color: AppColors.badgeBg,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.remove_red_eye,
+                    size: 24,
+                    color: AppColors.primary,
+                  ),
                 ),
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                cheifcomplaint,
-                style: const TextStyle(fontSize: 16),
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-               Text(isDiagnosed? 'Visit Completed': 'Not Visited',
-                 style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: isDiagnosed ? Colors.green.shade700 : Colors.red.shade700,
-                 ),
-                 )
+              )
             ],
           ),
-        ),
+
+          
+
+          const SizedBox(height: 12),
+
+          /// 🔹 Chief Complaint
+          _infoTile(
+            title: "CHIEF COMPLAINT",
+            value: cheifcomplaint,
+            icon: Icons.monitor_heart_outlined,
+          ),
+
+          const SizedBox(height: 10),
+
+          /// 🔹 Visit Date
+          _infoTile(
+            title: "VISIT DATE",
+            value: visitdate,
+            icon: Icons.calendar_month_outlined,
+          ),
+
+          const SizedBox(height: 14),
+
+          /// 🔹 Status Chip
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+              decoration: BoxDecoration(
+                color: isDiagnosed
+                    ? Colors.green.shade100
+                    : Colors.red.shade100,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    isDiagnosed ? Icons.check_circle : Icons.cancel,
+                    size: 16,
+                    color: isDiagnosed
+                        ? Colors.green.shade700
+                        : Colors.red.shade700,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    isDiagnosed ? "VISIT COMPLETED" : "NOT VISITED",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: isDiagnosed
+                          ? Colors.green.shade700
+                          : Colors.red.shade700,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _infoTile({
+    required String title,
+    required String value,
+    required IconData icon,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: Colors.blueGrey),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey.shade600,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 }
+
+
+// class VisitViewModel extends StatelessWidget {
+//   const VisitViewModel({
+//     super.key,
+//     required this.cheifcomplaint,
+//     required this.height,
+//     required this.weight,
+//     required this.bp,
+//     required this.temprature,
+//     required this.heartrate,
+//     required this.visitdate, required this.associateddoctor,
+//   });
+
+//   final String cheifcomplaint;
+//   final String associateddoctor;
+//   final String height;
+//   final String weight;
+//   final String bp;
+//   final String temprature;
+//   final String heartrate;
+//   final String visitdate;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Dialog(
+//       insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+//       child: Padding(
+//         padding: const EdgeInsets.all(16),
+//         child: Column(
+//           mainAxisSize: MainAxisSize.min,
+//           children: [
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 const Text(
+//                   "Complaint Details",
+//                   style: TextStyle(
+//                     fontSize: 20,
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//                 IconButton(
+//                     onPressed: () {
+//                       context.router.pop();
+//                     },
+//                     icon: const Icon(Icons.close))
+//               ],
+//             ),
+//             const SizedBox(
+//               height: 10,
+//             ),
+//             Row(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 const Text(
+//                   "Associated Doctor: ",
+//                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+//                 ),
+//                 Flexible(
+//                   child: Text(
+//                     "$associateddoctor",
+//                     style: const TextStyle(fontSize: 14),
+//                     softWrap: true,
+//                   ),
+//                 ),
+                
+//               ],
+//             ),
+//             const SizedBox(
+//               height: 8,
+//             ),
+//             Row(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 const Text(
+//                   "Chief Complaint: ",
+//                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+//                 ),
+//                 Flexible(
+//                   child: Text(
+//                     "$cheifcomplaint",
+//                     style: const TextStyle(fontSize: 14),
+//                     softWrap: true,
+//                   ),
+//                 ),
+               
+//               ],
+//             ),
+//             SizedBox(height: 8,),
+//             if (height != "") ...[
+//               Row(
+//                 children: [
+//                   const Text(
+//                     "Height: ",
+//                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+//                   ),
+//                   Text("${height}", style: TextStyle(fontSize: 14)),
+//                 ],
+//               ),
+//               const SizedBox(
+//                 height: 8,
+//               ),
+//             ],
+//             if (weight != "") ...[
+//               Row(
+//                 children: [
+//                   const Text(
+//                     "Weight: ",
+//                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+//                   ),
+//                   Text("${weight}", style: TextStyle(fontSize: 14)),
+//                 ],
+//               ),
+//               const SizedBox(
+//                 height: 8,
+//               ),
+//             ],
+//             if (temprature != "") ...[
+//               Row(
+//                 children: [
+//                   const Text(
+//                     "Temperature: ",
+//                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+//                   ),
+//                   Text("${temprature}", style: TextStyle(fontSize: 14)),
+//                 ],
+//               ),
+//               const SizedBox(
+//                 height: 8,
+//               ),
+//             ],
+//             if (bp != "") ...[
+//               Row(
+//                 children: [
+//                   const Text(
+//                     "Blood Pressure: ",
+//                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+//                   ),
+//                   Text("${bp}", style: TextStyle(fontSize: 14)),
+//                 ],
+//               ),
+//               const SizedBox(
+//                 height: 8,
+//               ),
+//             ],
+//             if (heartrate != "") ...[
+//               Row(
+//                 children: [
+//                   const Text(
+//                     "Heart Rate: ",
+//                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+//                   ),
+//                   Text("${heartrate}", style: TextStyle(fontSize: 14)),
+//                 ],
+//               ),
+//               const SizedBox(
+//                 height: 8,
+//               ),
+//             ],
+//             Row(
+//               children: [
+//                 const Text(
+//                   "Visit Date: ",
+//                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+//                 ),
+//                 Text("${visitdate}", style: TextStyle(fontSize: 14)),
+//               ],
+//             ),
+//             const SizedBox(
+//               height: 8,
+//             ),
+//             // Row(
+//             //   children: [
+//             //     const Text(
+//             //       "Creation Time: ",
+//             //       style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+//             //     ),
+//             //     Text("${createdat}", style: TextStyle(fontSize: 14)),
+//             //   ],
+//             // ),
+//             // const SizedBox(
+//             //   height: 8,
+//             // ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class VisitViewModel extends StatelessWidget {
   const VisitViewModel({
@@ -393,7 +799,8 @@ class VisitViewModel extends StatelessWidget {
     required this.bp,
     required this.temprature,
     required this.heartrate,
-    required this.visitdate, required this.associateddoctor,
+    required this.visitdate,
+    required this.associateddoctor, required this.creationtime,
   });
 
   final String cheifcomplaint;
@@ -404,174 +811,170 @@ class VisitViewModel extends StatelessWidget {
   final String temprature;
   final String heartrate;
   final String visitdate;
+  final String creationtime;
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       insetPadding: const EdgeInsets.symmetric(horizontal: 16),
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Complaint Details",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                IconButton(
-                    onPressed: () {
-                      context.router.pop();
-                    },
-                    icon: const Icon(Icons.close))
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Associated Doctor: ",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                ),
-                Flexible(
-                  child: Text(
-                    "$associateddoctor",
-                    style: const TextStyle(fontSize: 14),
-                    softWrap: true,
-                  ),
-                ),
-                
-              ],
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Chief Complaint: ",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                ),
-                Flexible(
-                  child: Text(
-                    "$cheifcomplaint",
-                    style: const TextStyle(fontSize: 14),
-                    softWrap: true,
-                  ),
-                ),
-               
-              ],
-            ),
-            SizedBox(height: 8,),
-            if (height != "") ...[
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              /// 🔴 Header
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Height: ",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color:AppColors.badgeBg,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.monitor_heart,
+                          color: AppColors.primaryDark,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      const Text(
+                        "Complaint Details",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryDark,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text("${height}", style: TextStyle(fontSize: 14)),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: AppColors.primaryDark),
+                    onPressed: () => context.router.pop(),
+                  )
                 ],
               ),
-              const SizedBox(
-                height: 8,
+
+              const SizedBox(height: 16),
+
+              /// Chief Complaint
+              _infoCard(
+                icon: Icons.monitor_heart_outlined,
+                title: "CHIEF COMPLAINT",
+                value: cheifcomplaint,
+                highlight: true,
               ),
+
+              const SizedBox(height: 12),
+
+              /// Visit Date
+              _infoCard(
+                icon: Icons.calendar_month,
+                title: "VISIT DATE",
+                value: visitdate,
+              ),
+
+              const SizedBox(height: 12),
+
+              /// Doctor
+              _infoCard(
+                icon: Icons.medical_services_outlined,
+                title: "ASSOCIATED DOCTOR",
+                value: associateddoctor,
+              ),
+                            const SizedBox(height: 12),
+
+               _infoCard(
+                icon: Icons.watch_later_outlined,
+                title: "CREATION TIME",
+                value:creationtime ,
+              ),
+
+              const SizedBox(height: 12),
+
+              /// Vitals
+              if (height.isNotEmpty)
+                _infoCard(title: "HEIGHT", value: height),
+              if (weight.isNotEmpty)
+                _infoCard(title: "WEIGHT", value: weight),
+              if (bp.isNotEmpty)
+                _infoCard(title: "BLOOD PRESSURE", value: bp),
+              if (temprature.isNotEmpty)
+                _infoCard(title: "TEMPERATURE", value: temprature),
+              if (heartrate.isNotEmpty)
+                _infoCard(title: "HEART RATE", value: heartrate),
             ],
-            if (weight != "") ...[
-              Row(
-                children: [
-                  const Text(
-                    "Weight: ",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  Text("${weight}", style: TextStyle(fontSize: 14)),
-                ],
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-            ],
-            if (temprature != "") ...[
-              Row(
-                children: [
-                  const Text(
-                    "Temperature: ",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  Text("${temprature}", style: TextStyle(fontSize: 14)),
-                ],
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-            ],
-            if (bp != "") ...[
-              Row(
-                children: [
-                  const Text(
-                    "Blood Pressure: ",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  Text("${bp}", style: TextStyle(fontSize: 14)),
-                ],
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-            ],
-            if (heartrate != "") ...[
-              Row(
-                children: [
-                  const Text(
-                    "Heart Rate: ",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  Text("${heartrate}", style: TextStyle(fontSize: 14)),
-                ],
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-            ],
-            Row(
-              children: [
-                const Text(
-                  "Visit Date: ",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                ),
-                Text("${visitdate}", style: TextStyle(fontSize: 14)),
-              ],
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            // Row(
-            //   children: [
-            //     const Text(
-            //       "Creation Time: ",
-            //       style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            //     ),
-            //     Text("${createdat}", style: TextStyle(fontSize: 14)),
-            //   ],
-            // ),
-            // const SizedBox(
-            //   height: 8,
-            // ),
-          ],
+          ),
         ),
       ),
     );
   }
+
+  /// 🔹 Reusable Card
+  Widget _infoCard({
+    IconData? icon,
+    required String title,
+    required String value,
+    bool highlight = false,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: highlight ? const Color(0xffFFF5F5) : Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: highlight ? AppColors.badgeBg : Colors.grey.shade300,
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (icon != null) ...[
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.red.shade50,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(icon, size: 18, color: AppColors.primaryDark),
+            ),
+            const SizedBox(width: 10),
+          ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
+
 
 class RegisterVisitModel extends StatefulWidget {
   const RegisterVisitModel({
@@ -877,8 +1280,12 @@ class _RegisterVisitModelState extends State<RegisterVisitModel> {
                 const SizedBox(
                   height: 20,
                 ),
-                SizedBox(
+                Container(
                   width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    gradient: AppColors.primaryGradient,
+                  ),
                   child: ElevatedButton(
                     onPressed:adminprovider.addingoutvisit? null: () async {
                       if (formkey.currentState!.validate()) {
@@ -903,7 +1310,8 @@ class _RegisterVisitModelState extends State<RegisterVisitModel> {
                       // context.router.pop();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:adminprovider.addingoutvisit? Colors.grey.shade300: Color(0xFF0857C0),
+                      backgroundColor:adminprovider.addingoutvisit? Colors.grey.shade300: Colors.transparent,
+                      shadowColor: Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

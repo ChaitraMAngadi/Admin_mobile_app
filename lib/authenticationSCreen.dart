@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:admin_mobile_application/provider/authProvider.dart';
 import 'package:admin_mobile_application/services/constants.dart';
 import 'package:admin_mobile_application/services/secureStorage.dart';
+import 'package:admin_mobile_application/theme/app_colors.dart';
 import 'package:auto_route/auto_route.dart';
 
 import 'package:flutter/material.dart';
@@ -157,15 +158,15 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         ),
                         animationType: AnimationType.fade,
                         pinTheme: PinTheme(
-                          activeColor: Colors.blue,
-                          selectedColor: Colors.blue,
-                          selectedFillColor: Colors.blue,
+                          activeColor: AppColors.secondary,
+                          selectedColor: AppColors.primary,
+                          selectedFillColor: AppColors.badgeBg,
                           inactiveColor: Colors.grey,
                           shape: PinCodeFieldShape.box,
                           borderRadius: BorderRadius.circular(10),
                           fieldHeight: 40,
                           fieldWidth: 40,
-                          activeFillColor: Colors.blue,
+                          activeFillColor: AppColors.badgeBg,
                         ),
                         cursorColor: Colors.black,
                         animationDuration: const Duration(milliseconds: 300),
@@ -175,7 +176,11 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     const SizedBox(
                       height: 10,
                     ),
-                    SizedBox(
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        gradient: AppColors.primaryGradient,
+                      ),
                       width: double.infinity,
                       child: FilledButton(
                           style: ButtonStyle(
@@ -184,7 +189,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                               vertical: 14,
                             )),
                             backgroundColor: WidgetStateProperty.all(
-                                const Color(0Xff2556B9)),
+                                Colors.transparent),
+                                shadowColor: WidgetStatePropertyAll(Colors.transparent),
                             shape: WidgetStateProperty.all(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(23.0))),
