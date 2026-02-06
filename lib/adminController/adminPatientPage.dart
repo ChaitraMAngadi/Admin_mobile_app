@@ -1197,9 +1197,11 @@ class ViewModel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: Colors.white,
       insetPadding: const EdgeInsets.all(16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(22),top: Radius.circular(10))),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             height: 4,
