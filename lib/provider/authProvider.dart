@@ -39,12 +39,17 @@ class Authprovider extends ChangeNotifier {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         print(responseData);
-        print(responseData['token']);
-        await secureStorage.writeSecureData('token', responseData['token']);
+       await secureStorage.writeSecureData('token', responseData['token']);
+        await secureStorage.writeSecureData('refreshtoken', responseData['refreshToken']);
         await secureStorage.readSecureData('token').then((value) {
           Constants.token = value;
         });
 
+  await secureStorage.readSecureData('refreshtoken').then((value) {
+          Constants.refreshtoken = value;
+        });
+        print("Constants.admintoken ${Constants.token}");
+        print("Constants.adminrefreshtoken ${Constants.refreshtoken}");
         await secureStorage.writeSecureData("isLoggedIn", "true");
 
 await secureStorage.writeSecureData(
@@ -235,13 +240,18 @@ final headers = await DeviceHeaders.getDeviceHeaders();
       if (response.statusCode == 200) {
         // Successful POST request, handle the response here
         final responseData = jsonDecode(response.body);
-        print(responseData);
-        print(responseData['token']);
         await secureStorage.writeSecureData('token', responseData['token']);
+        await secureStorage.writeSecureData('refreshtoken', responseData['refreshToken']);
         await secureStorage.readSecureData('token').then((value) {
           Constants.token = value;
         });
 
+  await secureStorage.readSecureData('refreshtoken').then((value) {
+          Constants.refreshtoken = value;
+        });
+        print("Constants.admintoken ${Constants.token}");
+        print("Constants.adminrefreshtoken ${Constants.refreshtoken}");
+        
         await secureStorage.writeSecureData('role', responseData['role']);
         await secureStorage.readSecureData('role').then((value) {
           Constants.role = value;

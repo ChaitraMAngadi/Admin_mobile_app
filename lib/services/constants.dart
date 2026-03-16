@@ -1,5 +1,5 @@
 class Constants {
-  // static const String baseUrl = "http://10.159.189.253:5000";
+  // static const String baseUrl = "http://192.168.0.237:5000";
   static const String baseUrl = "https://jellyfish-app-knz87.ondigitalocean.app";
   // static const String baseUrl =
   //     "https://stingray-app-2-nhnb4.ondigitalocean.app";
@@ -12,6 +12,7 @@ class Constants {
   static bool otpverification = false;
 
   static String token = '';
+  static String refreshtoken = '';
   static String phone = '';
   static String role = '';
 
