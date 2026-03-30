@@ -255,7 +255,9 @@ class _EditPatientAdminPageState extends State<EditPatientAdminPage> {
                                     RegExp(r'[a-zA-Z0-9.@]')),
                               ],
                               validator: (value) {
-                                
+                                 if (value == null || value.isEmpty) {
+                        return null; // No error for empty value
+                      }
                                  const emailRegex =
                       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|org|net|edu|gov|in|io|co|me|info|biz|xyz)$';
 
@@ -273,7 +275,7 @@ class _EditPatientAdminPageState extends State<EditPatientAdminPage> {
                             ),
                             const SizedBox(height: 16),
                             const Text(
-                              'Phone number of the patient',
+                              'Phone number of the patient*',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

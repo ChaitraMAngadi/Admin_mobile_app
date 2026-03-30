@@ -649,7 +649,7 @@ class PatientModel extends StatelessWidget {
                ),
              ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(4.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -685,7 +685,8 @@ class PatientModel extends StatelessWidget {
                         border: Border.all(color: Colors.green,)
                       ),
                       child: ElevatedButton.icon(
-                        style: ButtonStyle(
+                        
+                        style: ButtonStyle(foregroundColor: WidgetStatePropertyAll(Colors.white),
                           backgroundColor: WidgetStatePropertyAll(Colors.transparent,),
                           shadowColor: WidgetStatePropertyAll(Colors.transparent,),
                         ),
@@ -704,11 +705,11 @@ class PatientModel extends StatelessWidget {
                         gradient:isCreatedByAdmin != "" ? LinearGradient(colors: [
                           Colors.blue.shade100,Colors.blue.shade50,
                         ]): LinearGradient(colors: [
-                          Colors.grey.shade200,Colors.grey.shade300
+                          Colors.grey.shade200,Colors.grey.shade100
                         ]),
                         borderRadius: BorderRadius.all(Radius.circular(16)),
                         border: Border.all(
-                          color:isCreatedByAdmin != "" ? Colors.blue:Colors.grey.shade600
+                          color:isCreatedByAdmin != "" ? Colors.blue:Colors.grey.shade200
                         )
                       ),
                       child: ElevatedButton.icon(
@@ -717,11 +718,11 @@ class PatientModel extends StatelessWidget {
                           shadowColor: WidgetStatePropertyAll(Colors.transparent)
                         ),
                         icon: Icon(Icons.edit,
-                        color:isCreatedByAdmin != "" ? Colors.blue.shade900:Colors.grey.shade600 ,),
+                        color:isCreatedByAdmin != "" ? Colors.blue.shade900:Colors.grey.shade400 ,),
                         label: Text("Edit",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: isCreatedByAdmin != "" ? Colors.blue.shade900:Colors.grey.shade600 
+                          color: isCreatedByAdmin != "" ? Colors.blue.shade900:Colors.grey.shade400 
                         ),), onPressed: onEdit))),
                   ],
                 ),
@@ -1250,7 +1251,8 @@ class ViewModel extends StatelessWidget {
                   ),
           
                   const SizedBox(height: 12),
-          
+
+                  if(email.isNotEmpty || email != "")
                   _infoTile(
                     icon: Icons.email,
                     label: "EMAIL",

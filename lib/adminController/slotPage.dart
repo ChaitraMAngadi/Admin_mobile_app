@@ -777,145 +777,147 @@ String formatDate(String date) {
           key: formkey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Book Appointment",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryDark
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: Icon(Icons.close,
-                      color: AppColors.primaryDark,),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  "Name",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 4),
-                TextFormField(
-                  controller: name,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter Name';
-                    }
-                    return null; // Return null if validation is successful
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Name',
-                  ),
-                ),
-                const SizedBox(height: 6),
-                const Text(
-                  "Mobile Number",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 4),
-                TextFormField(
-                  controller: mobile,
-                 inputFormatters: <TextInputFormatter>[
-                      LengthLimitingTextInputFormatter(10),
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                    ],
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Mobile',
-                  ),
-                  validator: (value) {
-                    if (value!.length != 10) {
-                        return 'Phone number must be exactly 10 digits';
-                      }
-                      if (!RegExp(r'^[6-9]\d{9}$').hasMatch(value)) {
-                        return 'Enter a valid phone number';
-                      }
-                      return null; // Return null if validation is successful
-                  },
-                ),
-                SizedBox(height: 10),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.shade50,
-                    borderRadius: const BorderRadius.all(Radius.circular(16)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Selected Slot: ',
+                        "Book Appointment",
                         style: TextStyle(
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                          color: AppColors.primaryDark
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        "${slot.startTime}-${slot.endTime}",
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        "Date: ${formatDate(selectedDate.toString())}",
-                        style: const TextStyle(fontSize: 15),
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(Icons.close,
+                        color: AppColors.primaryDark,),
                       ),
                     ],
                   ),
-                ),
-                SizedBox(height: 16),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 6),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                    gradient: AppColors.primaryGradient,
+                  const SizedBox(height: 12),
+                  const Text(
+                    "Name*",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () async {
-                      if (formkey.currentState!.validate()) {
-                        await p.bookSlot(
-                          widget.patientId,
-                          slot,
-                          selectedDate,
-                          name.text,
-                          mobile.text,
-                          context,
-                        );
-                        Navigator.pop(context);
-                        p.loadByDate(selectedDate, widget.patientId);
+                  const SizedBox(height: 4),
+                  TextFormField(
+                    controller: name,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter Name';
                       }
+                      return null; // Return null if validation is successful
                     },
-                    child: const Text(
-                      "Confirm Booking",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter Name',
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  const Text(
+                    "Mobile Number*",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 4),
+                  TextFormField(
+                    controller: mobile,
+                   inputFormatters: <TextInputFormatter>[
+                        LengthLimitingTextInputFormatter(10),
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                      ],
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter Mobile',
+                    ),
+                    validator: (value) {
+                      if (value!.length != 10) {
+                          return 'Phone number must be exactly 10 digits';
+                        }
+                        if (!RegExp(r'^[6-9]\d{9}$').hasMatch(value)) {
+                          return 'Enter a valid phone number';
+                        }
+                        return null; // Return null if validation is successful
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade50,
+                      borderRadius: const BorderRadius.all(Radius.circular(16)),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Selected Slot: ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "${slot.startTime}-${slot.endTime}",
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "Date: ${formatDate(selectedDate.toString())}",
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 6),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      gradient: AppColors.primaryGradient,
+                    ),
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: () async {
+                        if (formkey.currentState!.validate()) {
+                          await p.bookSlot(
+                            widget.patientId,
+                            slot,
+                            selectedDate,
+                            name.text,
+                            mobile.text,
+                            context,
+                          );
+                          Navigator.pop(context);
+                          p.loadByDate(selectedDate, widget.patientId);
+                        }
+                      },
+                      child: const Text(
+                        "Confirm Booking",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 10),
-              ],
+                  const SizedBox(height: 10),
+                ],
+              ),
             ),
           ),
         ),

@@ -898,16 +898,18 @@ class VisitViewModel extends StatelessWidget {
               const SizedBox(height: 12),
 
               /// Vitals
-              if (height.isNotEmpty)
-                _infoCard(title: "HEIGHT", value: height),
-              if (weight.isNotEmpty)
-                _infoCard(title: "WEIGHT", value: weight),
-              if (bp.isNotEmpty)
-                _infoCard(title: "BLOOD PRESSURE", value: bp),
-              if (temprature.isNotEmpty)
-                _infoCard(title: "TEMPERATURE", value: temprature),
-              if (heartrate.isNotEmpty)
-                _infoCard(title: "HEART RATE", value: heartrate),
+              // if (height.isNotEmpty)
+              //   _infoCard(title: "HEIGHT", value: height),
+              // if (weight.isNotEmpty)
+              //   _infoCard(title: "WEIGHT", value: weight),
+              // if (bp.isNotEmpty)
+              //   _infoCard(title: "BLOOD PRESSURE", value: bp),
+              // if (temprature.isNotEmpty)
+              //   _infoCard(title: "TEMPERATURE", value: temprature),
+              // if (heartrate.isNotEmpty)
+              //   _infoCard(title: "HEART RATE", value: heartrate),
+
+              _buildVitalsSection(),
             ],
           ),
         ),
@@ -974,7 +976,106 @@ class VisitViewModel extends StatelessWidget {
       ),
     );
   }
+  Widget _buildVitalsSection() {
+  final vitals = <Map<String, dynamic>>[
+    if (height.isNotEmpty)
+      {'icon': Icons.height, 'title': 'HEIGHT', 'value': height},
+    if (weight.isNotEmpty)
+      {'icon': Icons.monitor_weight_outlined, 'title': 'WEIGHT', 'value': weight},
+    if (bp.isNotEmpty)
+      {'icon': Icons.favorite_outline, 'title': 'BLOOD PRESSURE', 'value': bp},
+    if (temprature.isNotEmpty)
+      {'icon': Icons.thermostat, 'title': 'TEMPERATURE', 'value': temprature},
+    if (heartrate.isNotEmpty)
+      {'icon': Icons.monitor_heart_outlined, 'title': 'HEART RATE', 'value': heartrate},
+  ];
+
+  if (vitals.isEmpty) return const SizedBox.shrink();
+
+  final rows = <Widget>[];
+  for (int i = 0; i < vitals.length; i += 2) {
+    final first = vitals[i];
+    final second = i + 1 < vitals.length ? vitals[i + 1] : null;
+
+    rows.add(
+      Row(
+        children: [
+          Expanded(child: _vitalCard(first['icon'], first['title'], first['value'])),
+          if (second != null) ...[
+            const SizedBox(width: 10),
+            Expanded(child: _vitalCard(second['icon'], second['title'], second['value'])),
+          ] else
+            const Expanded(child: SizedBox()),
+        ],
+      ),
+    );
+
+    if (i + 2 < vitals.length) rows.add(const SizedBox(height: 10));
+  }
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const SizedBox(height: 12),
+      Text(
+        "VITALS",
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.2,
+          color: Colors.grey.shade500,
+        ),
+      ),
+      const SizedBox(height: 8),
+      ...rows,
+    ],
+  );
 }
+
+Widget _vitalCard(IconData icon, String title, String value) {
+  return Container(
+    padding: const EdgeInsets.all(12),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(color: Colors.grey.shade300),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(7),
+          decoration: BoxDecoration(
+            color: AppColors.badgeBg,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(icon, size: 16, color: AppColors.primaryDark),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 1,
+            color: Colors.grey.shade500,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+}
+
+
 
 
 class RegisterVisitModel extends StatefulWidget {
@@ -1252,7 +1353,16 @@ class _RegisterVisitModelState extends State<RegisterVisitModel> {
                   items: widget.alldoctors,
                   itemAsString: (doc) => "${doc['name']} | ${doc['userid']}",
                   selectedItem: selectedConsultingDoctor,
-                  popupProps: const PopupProps.menu(showSearchBox: true),
+                   popupProps: PopupProps.menu(
+    showSearchBox: true,
+    constraints: BoxConstraints(
+      maxHeight: 150, // caps it, but won't add empty space
+    ),
+    menuProps: MenuProps(
+      borderRadius: BorderRadius.circular(12),
+    ),
+  ),
+                  // popupProps: const PopupProps.menu(showSearchBox: true),
                   dropdownDecoratorProps: DropDownDecoratorProps(
                     dropdownSearchDecoration: InputDecoration(
                       hintText: "Select Consulting Doctor",

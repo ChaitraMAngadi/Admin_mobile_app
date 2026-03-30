@@ -278,7 +278,7 @@ class _TodaysOutvisitsPageState extends State<TodaysOutvisitsPage> {
                                                     age: item['age'],
                                                     gender: item['gender'],
                                                     phone: item['phone'].toString(),
-                                                    email: item['email'],
+                                                    email: item['email']??"",
                                                     dob: formatDate(item['DOB']),
                                                     createdby: '',
                                                     associateddoctor:' ${item[

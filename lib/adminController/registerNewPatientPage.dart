@@ -152,7 +152,7 @@ class _RegisterNewPatientPageState extends State<RegisterNewPatientPage> {
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                    'Phone number of the patient',
+                    'Phone number of the patient*',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
