@@ -32,8 +32,8 @@ class _PatientAdminOutvisitsPageState
   void initState() {
     super.initState();
     final adminprovider = context.read<AdminPageProvider>();
-    fetchoutvisits = adminprovider.getpatientoutvisits(widget.patientId);
-    fetchalldoctorsnurses = adminprovider.getdoctorsnurses();
+    fetchoutvisits = adminprovider.getpatientoutvisits(widget.patientId, context);
+    fetchalldoctorsnurses = adminprovider.getdoctorsnurses(context);
   }
 
   String formatDate(String date) {
@@ -290,7 +290,7 @@ class _PatientAdminOutvisitsPageState
     await Future.delayed(Duration(seconds: 2));
     Constants.token = await secureStorage.readSecureData('token') ?? '';
     setState(() {
-      fetchoutvisits = adminprovider.getpatientoutvisits(widget.patientId);
+      fetchoutvisits = adminprovider.getpatientoutvisits(widget.patientId, context);
     });
   }
   }
@@ -1415,7 +1415,7 @@ class _RegisterVisitModelState extends State<RegisterVisitModel> {
                           context,
                         );
 
-                        await adminprovider.getpatientoutvisits(widget.patientId);
+                        await adminprovider.getpatientoutvisits(widget.patientId, context);
                       }
 
                       // context.router.pop();

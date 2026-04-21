@@ -24,7 +24,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
     // TODO: implement initState
     super.initState();
     AdminPageProvider adminprovider = context.read<AdminPageProvider>();
-    fetchadminprofile = adminprovider.getadmindetailedprofile();
+    fetchadminprofile = adminprovider.getadmindetailedprofile(context);
   }
 
   String formatDate(String date) {
@@ -332,7 +332,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
     Constants.token =
         await secureStorage.readSecureData('token') ?? '';
     setState(() {
-      fetchadminprofile = adminprovider.getadmindetailedprofile();
+      fetchadminprofile = adminprovider.getadmindetailedprofile(context);
     });
   }
 }

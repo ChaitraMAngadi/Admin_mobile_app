@@ -25,7 +25,7 @@ class _TodaysOutvisitsPageState extends State<TodaysOutvisitsPage> {
   void initState() {
     super.initState();
     AdminPageProvider adminPageProvider = context.read<AdminPageProvider>();
-    fetchtodaysoutvisits = adminPageProvider.gettodaysoutvisits().then((_) {
+    fetchtodaysoutvisits = adminPageProvider.gettodaysoutvisits(context).then((_) {
       setState(() {
         adminPageProvider.filteredvisits = adminPageProvider.gettodaysvisits;
       });
@@ -430,11 +430,11 @@ class _TodaysOutvisitsPageState extends State<TodaysOutvisitsPage> {
 
   Future<void> _handleRefresh() async {
     AdminPageProvider adminPageProvider = context.read<AdminPageProvider>();
-
+adminPageProvider.invalidateCache(key: adminPageProvider.Outvisits);
     await Future.delayed(Duration(seconds: 2));
     Constants.token = await secureStorage.readSecureData('token') ?? '';
     setState(() {
-      fetchtodaysoutvisits = adminPageProvider.gettodaysoutvisits();
+      fetchtodaysoutvisits = adminPageProvider.gettodaysoutvisits(context);
       adminPageProvider.filteredvisits = adminPageProvider.gettodaysvisits;
     });
   }

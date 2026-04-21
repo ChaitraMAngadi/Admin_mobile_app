@@ -44,7 +44,7 @@ final SecureStorage secureStorage = SecureStorage();
     super.initState();
     _checkToken();
     AdminPageProvider adminPageProvider = context.read<AdminPageProvider>();
-    fetchadmin = adminPageProvider.getadmindetailedprofile();
+    fetchadmin = adminPageProvider.getadmindetailedprofile(context);
   }
 
 

@@ -316,7 +316,7 @@ class _RegisterNewPatientPageState extends State<RegisterNewPatientPage> {
                               formatedJoiDate,
                               context);
 
-                          await adminprovider.getPatientsByPage(1);
+                          await adminprovider.getPatientsByPage(1,context);
 
                           // patientpageprovider.notify();
                         }

@@ -105,7 +105,7 @@ class _SlotPageState extends State<SlotPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final p = Provider.of<AdminPageProvider>(context, listen: false);
-      await p.loadInitialData(widget.patientId, selectedDate);
+      await p.loadInitialData(widget.patientId, selectedDate, context);
 
        loginController.text = normalizeTo24(p.loginTime);
       logoutController.text = normalizeTo24(p.logoutTime);
@@ -611,7 +611,7 @@ class _SlotPageState extends State<SlotPage> {
    
       });
 
-       await p.loadByDate(selectedDate, widget.patientId);
+       await p.loadByDate(selectedDate, widget.patientId, context);
 
     print("API LoginTime: ${p.loginTime}");
     print("API LogoutTime: ${p.logoutTime}");
@@ -903,7 +903,7 @@ String formatDate(String date) {
                             context,
                           );
                           Navigator.pop(context);
-                          p.loadByDate(selectedDate, widget.patientId);
+                          p.loadByDate(selectedDate, widget.patientId, context);
                         }
                       },
                       child: const Text(
@@ -1003,7 +1003,7 @@ String formatDate(String date) {
                                 context,
                               );
                               Navigator.pop(context);
-                              p.loadByDate(selectedDate, widget.patientId);
+                              p.loadByDate(selectedDate, widget.patientId, context);
                             },
                             child: const Text(
                               'Cancel',

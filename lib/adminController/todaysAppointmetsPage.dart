@@ -28,7 +28,7 @@ class _TodaysAppointmentsPageState extends State<TodaysAppointmentsPage> {
     super.initState();
     AdminPageProvider adminPageProvider = context.read<AdminPageProvider>();
     fetchtodaysappointments =
-        adminPageProvider.gettodaysappointments().then((_) {
+        adminPageProvider.gettodaysappointments(context).then((_) {
       setState(() {
         adminPageProvider.filteredtodaysappointments =
             adminPageProvider.todaysappointments;
@@ -362,7 +362,7 @@ class _TodaysAppointmentsPageState extends State<TodaysAppointmentsPage> {
     await Future.delayed(Duration(seconds: 2));
     Constants.token = await secureStorage.readSecureData('token') ?? '';
     setState(() {
-      fetchtodaysappointments = adminPageProvider.gettodaysappointments();
+      fetchtodaysappointments = adminPageProvider.gettodaysappointments(context);
       adminPageProvider.filteredtodaysappointments =
           adminPageProvider.todaysappointments;
     });
