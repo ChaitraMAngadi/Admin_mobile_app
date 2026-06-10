@@ -1872,32 +1872,56 @@ Future<void> gettodaysappointments(BuildContext context) async {
       );
 
       if (response.statusCode == 200) {
-       print(response.body);
         final responseData = jsonDecode(response.body);
-await secureStorage.writeSecureData('token', responseData['token']);
+        await secureStorage.writeSecureData('token', responseData['token']);
         await secureStorage.writeSecureData('refreshtoken', responseData['refreshToken']);
-        await secureStorage.readSecureData('token').then((value) {
-          Constants.token = value;
-        });
+        Constants.token = responseData['token'];
+        Constants.refreshtoken = responseData['refreshToken'];
+        print("Constants.doctortoken ${Constants.token}");
+        print("Constants.doctorrefreshtoken ${Constants.refreshtoken}");
 
-  await secureStorage.readSecureData('refreshtoken').then((value) {
-          Constants.refreshtoken = value;
-        });
-        print("Constants.admintoken ${Constants.token}");
-        print("Constants.adminrefreshtoken ${Constants.refreshtoken}");
+      } else if (response.statusCode == 401 || response.statusCode == 403) {
+        // Only logout on auth errors
+        await secureStorage.deleteSecureData('token');
+        await secureStorage.deleteSecureData('refreshtoken');
+        Constants.token = '';
+        Constants.refreshtoken = '';
+        if (context.mounted) context.router.popAndPush(SplashRoute());
 
-
-        notifyListeners();
       } else {
-        print(response.body);
-        final responseData = jsonDecode(response.body);
-         secureStorage.deleteSecureData('token');
-        secureStorage.deleteSecureData('refreshtoken');
-        print("token : ${Constants.token}");
-        print("refresh token : ${Constants.refreshtoken}");
-        context.router.popAndPush(SplashRoute());
-       
+        // 500 or any other error — DO NOT logout, just print
+        print("Refresh failed with status: ${response.statusCode} — ${response.body}");
       }
+
+//       if (response.statusCode == 200) {
+//        print(response.body);
+//         final responseData = jsonDecode(response.body);
+// await secureStorage.writeSecureData('token', responseData['token']);
+//         await secureStorage.writeSecureData('refreshtoken', responseData['refreshToken']);
+//         await secureStorage.readSecureData('token').then((value) {
+//           Constants.token = value;
+//         });
+
+//   await secureStorage.readSecureData('refreshtoken').then((value) {
+//           Constants.refreshtoken = value;
+//         });
+//         print("Constants.admintoken ${Constants.token}");
+//         print("Constants.adminrefreshtoken ${Constants.refreshtoken}");
+
+
+//         notifyListeners();
+//       } else {
+//         print(response.body);
+//         final responseData = jsonDecode(response.body);
+//          secureStorage.deleteSecureData('token');
+//         secureStorage.deleteSecureData('refreshtoken');
+//         print("token : ${Constants.token}");
+//         print("refresh token : ${Constants.refreshtoken}");
+//         context.router.popAndPush(SplashRoute());
+       
+//       }
+
+
     } catch (e) {
       final error = SnackBar(content: Text(e.toString()));
     }

@@ -330,7 +330,7 @@ class _TodaysAppointmentsPageState extends State<TodaysAppointmentsPage> {
                                           itemBuilder: (context, index) {
                                             final item = adminPageProvider
                                                 .filteredtodaysappointments[index];
-                                            return TodaysAppointmentModel(
+                                            return TodaysAppointmentModel(status: item['status']??'',
                                               patientname: item['patientname']??'',
                                               patientmobile: item['patientMobile'].toString()??'',
                                               starttime: item['startTime']??'',
@@ -483,6 +483,201 @@ class _TodaysAppointmentsPageState extends State<TodaysAppointmentsPage> {
 // }
 
 
+// class TodaysAppointmentModel extends StatelessWidget {
+//   const TodaysAppointmentModel({
+//     super.key,
+//     required this.patientname,
+//     required this.patientmobile,
+//     required this.starttime,
+//     required this.endtime,
+//     required this.doctorname,
+//   });
+
+//   final String patientname;
+//   final String patientmobile;
+//   final String starttime;
+//   final String endtime;
+//   final String doctorname;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+//       child: Container(
+//         decoration: BoxDecoration(
+//           color: Colors.white,
+//           borderRadius: BorderRadius.vertical(top: Radius.circular(12), bottom: Radius.circular(22)),
+         
+//         ),
+//         child: Column(
+//           children: [
+//             Container(
+//               height: 4,
+//               decoration:BoxDecoration(
+//                 gradient: AppColors.primaryGradient,
+//                 borderRadius: BorderRadius.vertical(top: Radius.circular(22))
+//               ),
+//             ),
+//             Padding(
+//               padding: const EdgeInsets.all(12),
+//               child: Container(
+//                 padding: const EdgeInsets.all(14),
+//                 decoration: BoxDecoration(
+//                   color: const Color(0xffF7FAFC),
+//                   borderRadius: BorderRadius.circular(14),
+//                 ),
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+                    
+//                       Row(
+//                         children: [
+//                           Icon(Icons.person_outline, size: 18, color: Colors.grey),
+//                                   const SizedBox(width: 8),
+//                                   Text(
+//                                     "PATIENT NAME",
+//                                     style: const TextStyle(
+//                                       fontSize: 14,
+//                                       fontWeight: FontWeight.w600,
+//                                       color: Colors.grey,
+//                                     ),
+//                                   ),
+//                         ],
+//                       ),
+//         const SizedBox(height: 8),
+//         Text(
+//           patientname,
+//           style: const TextStyle(
+//             fontSize: 15,
+//             fontWeight: FontWeight.bold,
+//           ),
+//           overflow: TextOverflow.ellipsis,
+//         ),
+//                     const Divider(),
+
+//                     Row(
+//                       children: [
+//                         Icon(Icons.phone_outlined, size: 18, color: Colors.grey),
+//                                 const SizedBox(width: 8),
+//                                 Text(
+//                                   "MOBILE",
+//                                   style: const TextStyle(
+//                                     fontSize: 14,
+//                                     fontWeight: FontWeight.w600,
+//                                     color: Colors.grey,
+//                                   ),
+//                                 ),
+//                       ],
+//                     ),
+//         const SizedBox(height: 8),
+//         Text(
+//           patientmobile,
+//           style: const TextStyle(
+//             fontSize: 15,
+//             fontWeight: FontWeight.bold,
+//           ),
+//           overflow: TextOverflow.ellipsis,
+//         ),
+            
+                    
+//                     const Divider(),
+            
+//                     Row(
+//                       children: [
+//                         const Icon(Icons.access_time,
+//                             size: 18, color: Colors.grey),
+//                         const SizedBox(width: 8),
+//                         const Text(
+//                           "TIME SLOT",
+//                           style: TextStyle(
+//                             fontSize: 14,
+//                             fontWeight: FontWeight.w600,
+//                             color: Colors.grey,
+//                           ),
+//                         ),
+                       
+                        
+//                       ],
+//                     ),
+//                      const SizedBox(height: 12),
+//                     Container(
+//                           padding: const EdgeInsets.symmetric(
+//                               horizontal: 12, vertical: 6),
+//                           decoration: BoxDecoration(
+//                             gradient: AppColors.primaryGradient,
+//                             borderRadius: BorderRadius.circular(20),
+//                           ),
+//                           child: Text(
+//                             "$starttime - $endtime",
+//                             style: const TextStyle(
+//                               color: Colors.white,
+//                               fontWeight: FontWeight.bold,
+//                               fontSize: 12,
+//                             ),
+//                           ),
+//                         ),
+            
+//                     const Divider(),
+//                     const SizedBox(height: 4),
+            
+//                     const Text(
+//                       "DOCTOR",
+//                       style: TextStyle(
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.w600,
+//                         color: Colors.grey,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 4),
+//                     Text(
+//                       doctorname,
+//                       style: const TextStyle(
+//                         fontSize: 15,
+//                         fontWeight: FontWeight.bold,
+//                         color: AppColors.primary,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+
+//   Widget _rowItem({
+//     required IconData icon,
+//     required String title,
+//     required String value,
+//   }) {
+//     return Column(
+//       children: [
+//         Icon(icon, size: 18, color: Colors.grey),
+//         const SizedBox(width: 8),
+//         Text(
+//           title,
+//           style: const TextStyle(
+//             fontSize: 12,
+//             fontWeight: FontWeight.w600,
+//             color: Colors.grey,
+//           ),
+//         ),
+//         const SizedBox(width: 8),
+//         Text(
+//           value,
+//           style: const TextStyle(
+//             fontSize: 15,
+//             fontWeight: FontWeight.bold,
+//           ),
+//           overflow: TextOverflow.ellipsis,
+//         ),
+//       ],
+//     );
+//   }
+// }
+
 class TodaysAppointmentModel extends StatelessWidget {
   const TodaysAppointmentModel({
     super.key,
@@ -491,6 +686,7 @@ class TodaysAppointmentModel extends StatelessWidget {
     required this.starttime,
     required this.endtime,
     required this.doctorname,
+    required this.status,  // ADD THIS
   });
 
   final String patientname;
@@ -498,147 +694,178 @@ class TodaysAppointmentModel extends StatelessWidget {
   final String starttime;
   final String endtime;
   final String doctorname;
+  final String status;  // ADD THIS
 
   @override
   Widget build(BuildContext context) {
+    final isBooked = status.toLowerCase() == 'booked';
+    final statusColor = isBooked ? Colors.green : Colors.red;
+    final statusBg = isBooked ? Colors.green.shade50 : Colors.red.shade50;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(12), bottom: Radius.circular(22)),
-         
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.12),
+              spreadRadius: 1,
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Column(
           children: [
+            // Top gradient bar
             Container(
               height: 4,
-              decoration:BoxDecoration(
-                gradient: AppColors.primaryGradient,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(22))
+              decoration: BoxDecoration(
+                color: isBooked ? Colors.green : Colors.red,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: const Color(0xffF7FAFC),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    
-                      Row(
-                        children: [
-                          Icon(Icons.person_outline, size: 18, color: Colors.grey),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    "PATIENT NAME",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                        ],
-                      ),
-        const SizedBox(height: 8),
-        Text(
-          patientname,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
-          overflow: TextOverflow.ellipsis,
-        ),
-                    const Divider(),
 
-                    Row(
-                      children: [
-                        Icon(Icons.phone_outlined, size: 18, color: Colors.grey),
-                                const SizedBox(width: 8),
-                                Text(
-                                  "MOBILE",
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                      ],
-                    ),
-        const SizedBox(height: 8),
-        Text(
-          patientmobile,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
-          overflow: TextOverflow.ellipsis,
-        ),
-            
-                    
-                    const Divider(),
-            
-                    Row(
-                      children: [
-                        const Icon(Icons.access_time,
-                            size: 18, color: Colors.grey),
-                        const SizedBox(width: 8),
-                        const Text(
-                          "TIME SLOT",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.grey,
-                          ),
+            Padding(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  // Status badge row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: statusBg,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: statusColor.withOpacity(0.4)),
                         ),
-                       
-                        
-                      ],
-                    ),
-                     const SizedBox(height: 12),
-                    Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            gradient: AppColors.primaryGradient,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            "$starttime - $endtime",
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              isBooked ? Icons.check_circle : Icons.cancel,
+                              size: 14,
+                              color: statusColor,
                             ),
-                          ),
+                            const SizedBox(width: 4),
+                            Text(
+                              status.toUpperCase(),
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: statusColor,
+                              ),
+                            ),
+                          ],
                         ),
-            
-                    const Divider(),
-                    const SizedBox(height: 4),
-            
-                    const Text(
-                      "DOCTOR",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey,
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      doctorname,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primary,
+                    ],
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  // Patient Name
+                  Row(
+                    children: [
+                      const Icon(Icons.person_outline,
+                          size: 16, color: Colors.grey),
+                      const SizedBox(width: 6),
+                      const Text(
+                        'Patient',
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    patientname,
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+
+                  const Divider(height: 20),
+
+                  // Mobile
+                  Row(
+                    children: [
+                      const Icon(Icons.phone_outlined,
+                          size: 16, color: Colors.grey),
+                      const SizedBox(width: 6),
+                      const Text(
+                        'Mobile',
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    patientmobile,
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+
+                  const Divider(height: 20),
+
+                  // Time Slot
+                  Row(
+                    children: [
+                      const Icon(Icons.access_time,
+                          size: 16, color: Colors.grey),
+                      const SizedBox(width: 6),
+                      const Text(
+                        'Time Slot',
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      _timeChip(starttime, Icons.login),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        child: Icon(Icons.arrow_forward,
+                            size: 16, color: Colors.grey),
+                      ),
+                      _timeChip(endtime, Icons.logout),
+                    ],
+                  ),
+
+                  const Divider(height: 20),
+
+                  // Doctor
+                  Row(
+                    children: [
+                      const Icon(Icons.medical_services_outlined,
+                          size: 16, color: Colors.grey),
+                      const SizedBox(width: 6),
+                      const Text(
+                        'Doctor',
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    doctorname,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF0857C0),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -647,33 +874,30 @@ class TodaysAppointmentModel extends StatelessWidget {
     );
   }
 
-  Widget _rowItem({
-    required IconData icon,
-    required String title,
-    required String value,
-  }) {
-    return Column(
-      children: [
-        Icon(icon, size: 18, color: Colors.grey),
-        const SizedBox(width: 8),
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: Colors.grey,
+  Widget _timeChip(String time, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        gradient: AppColors.primaryGradient,
+        // color: const Color(0xFF0857C0).withOpacity(0.08),
+        borderRadius: BorderRadius.circular(20),
+        // border: Border.all(color: const Color(0xFF0857C0).withOpacity(0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Icon(icon, size: 14, color: const Color(0xFF0857C0)),
+          // const SizedBox(width: 4),
+          Text(
+            time,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
-        ),
-        const SizedBox(width: 8),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

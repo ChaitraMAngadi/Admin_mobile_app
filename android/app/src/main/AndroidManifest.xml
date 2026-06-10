@@ -5,7 +5,7 @@
 
 
     <application
-        android:label="admin_mobile_application"
+        android:label="PPLDOC-Admin"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
