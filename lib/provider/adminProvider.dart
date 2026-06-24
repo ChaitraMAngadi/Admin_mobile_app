@@ -64,7 +64,7 @@ class AdminPageProvider extends ChangeNotifier {
 
        final String kProfile  = 'profile';
 
-    final CacheManager _cache = CacheManager(cacheDuration: Duration(minutes: 10));
+  final CacheManager _cache = CacheManager();
 
 
     bool addingpatient = false;
@@ -935,7 +935,13 @@ Future<void> addoutvisit(
     Constants.token = await secureStorage.readSecureData('token') ?? '';
     try {
        if (_cache.isCacheValid(kProfile)) return;
-
+ final cachedVisits = _cache.get<List<Map<String, dynamic>>>(kProfile);
+      if (cachedVisits != null) {
+        alldoctorsdetails = cachedVisits;
+        // filteredVisits = List.from(allvisits);
+        notifyListeners();
+        return;
+      }
       final response = await http.get(
         Uri.parse(url),
         headers: <String, String>{
@@ -951,8 +957,8 @@ Future<void> addoutvisit(
             json.decode(response.body)['data'].cast<Map<String, dynamic>>();
             print('alldoctorsdetails $alldoctorsdetails');
 
-            _cache.markCached(kProfile);
-
+            // _cache.markCached(kProfile);
+            _cache.set(kProfile, alldoctorsdetails);
         notifyListeners();
       } else if(response.statusCode == 401){
         await refreshtoken(context);
@@ -972,7 +978,8 @@ Constants.token = await secureStorage.readSecureData('token') ?? '';
         alldoctorsdetails =
             json.decode(response.body)['data'].cast<Map<String, dynamic>>();
             print('alldoctorsdetails $alldoctorsdetails');
-_cache.markCached(kProfile);
+// _cache.markCached(kProfile);
+_cache.set(kProfile, alldoctorsdetails);
         notifyListeners();
       } else if (response.statusCode == 404) {
         final responseData = jsonDecode(response.body);
@@ -997,7 +1004,15 @@ _cache.markCached(kProfile);
     Constants.token = await secureStorage.readSecureData('token') ?? '';
     
     try {
-      if (_cache.isCacheValid(Outvisits)) return;
+      // if (_cache.isCacheValid(Outvisits)) return;
+      // final cachedVisits = _cache.get<List<Map<String, dynamic>>>(Outvisits);
+      // if (cachedVisits != null) {
+      //   gettodaysvisits = cachedVisits;
+      //   filteredVisits = List.from(allvisits);
+      //   notifyListeners();
+      //   return;
+      // }
+
       final response = await http.get(
         Uri.parse(url),
         headers: <String, String>{
@@ -1013,7 +1028,7 @@ _cache.markCached(kProfile);
             json.decode(response.body)['data'].cast<Map<String, dynamic>>();
         print('todays visits : $gettodaysvisits');
 
-        _cache.markCached(Outvisits);
+        // _cache.markCached(Outvisits);
         notifyListeners();
       } else if(response.statusCode == 401){
         await refreshtoken(context);
@@ -1035,7 +1050,7 @@ _cache.markCached(kProfile);
         gettodaysvisits =
             json.decode(response.body)['data'].cast<Map<String, dynamic>>();
         print('todays visits : $gettodaysvisits');
-        _cache.markCached(Outvisits);
+        // _cache.markCached(Outvisits);
         notifyListeners();
       } else if (response.statusCode == 404) {
         print('No visits found');

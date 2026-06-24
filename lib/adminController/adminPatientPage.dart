@@ -456,7 +456,7 @@ class _AllPatientsPageState extends State<AllPatientsPage> {
                     email: item['email'] ?? "",
                     phonenumber: item['phone'] ?? 0,
                     dob: formatDate(item['DOB'] ?? ""),
-                    age: item['age'] ?? "",
+                    age: item['DOB'] ?? "",
                     gender: item['gender'] ?? "",
                     createdbyadmin: "",
                     adminame: "",
@@ -1169,6 +1169,35 @@ class ListTileModel extends StatelessWidget {
 //   }
 // }
 
+String calculateAge(String dob) {
+  final birthDate = DateTime.parse(dob);
+  final today = DateTime.now();
+  int years = today.year - birthDate.year;
+  int months = today.month - birthDate.month;
+  int days = today.day - birthDate.day;
+
+  if (days < 0) {
+    months--;
+    // Days in the month before 'today's month
+    final prevMonth = DateTime(today.year, today.month, 0);
+    days += prevMonth.day;
+  }
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  if (years >= 5) {
+    return '$years ${years == 1 ? 'year' : 'years'}';
+  }
+
+  if (years == 0 && months == 0) {
+    return '0 month $days ${days == 1 ? 'day' : 'days'}';
+  }
+
+  return '$years ${years == 1 ? 'year' : 'years'} $months ${months == 1 ? 'month' : 'months'}';
+}
+
 class ViewModel extends StatelessWidget {
   const ViewModel({
     super.key,
@@ -1289,7 +1318,7 @@ class ViewModel extends StatelessWidget {
                         child: _smallTile(
                           icon: Icons.hourglass_bottom,
                           label: "AGE",
-                          value: age,
+                          value: calculateAge(age),
                         ),
                       ),
                     ],

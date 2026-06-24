@@ -275,7 +275,7 @@ class _TodaysOutvisitsPageState extends State<TodaysOutvisitsPage> {
                                                   return VisitViewModel(
                                                     name: item['name'],
                                                     id: item['patientId'],
-                                                    age: item['age'],
+                                                    age: item['DOB'],
                                                     gender: item['gender'],
                                                     phone: item['phone'].toString(),
                                                     email: item['email']??"",
@@ -327,7 +327,7 @@ class _TodaysOutvisitsPageState extends State<TodaysOutvisitsPage> {
                                                   return VisitViewModel(
                                                     name: item['name'],
                                                     id: item['patientId'],
-                                                    age: item['age'],
+                                                    age: item['DOB'],
                                                     gender: item['gender'],
                                                     phone: item['phone'].toString(),
                                                     email: item['email'],
@@ -1075,6 +1075,34 @@ Container(
 //   }
 // }
 
+String calculateAge(String dob) {
+  final birthDate = DateTime.parse(dob);
+  final today = DateTime.now();
+  int years = today.year - birthDate.year;
+  int months = today.month - birthDate.month;
+  int days = today.day - birthDate.day;
+
+  if (days < 0) {
+    months--;
+    // Days in the month before 'today's month
+    final prevMonth = DateTime(today.year, today.month, 0);
+    days += prevMonth.day;
+  }
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  if (years >= 5) {
+    return '$years ${years == 1 ? 'year' : 'years'}';
+  }
+
+  if (years == 0 && months == 0) {
+    return '0 month $days ${days == 1 ? 'day' : 'days'}';
+  }
+
+  return '$years ${years == 1 ? 'year' : 'years'} $months ${months == 1 ? 'month' : 'months'}';
+}
 
 class VisitViewModel extends StatelessWidget {
   const VisitViewModel({
@@ -1173,7 +1201,7 @@ class VisitViewModel extends StatelessWidget {
               _infoTile(
                 icon: Icons.cake_outlined,
                 label: "AGE",
-                value: age,
+                value: calculateAge(age),
               ),
               _infoTile(
                 icon: Icons.person_2_outlined,
