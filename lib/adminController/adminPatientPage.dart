@@ -473,7 +473,7 @@ class _AllPatientsPageState extends State<AllPatientsPage> {
                     email: item['email'] ?? "",
                     phonenumber: item['phone'] ?? 0,
                     dob: formatDate(item['DOB'] ?? ""),
-                    age: item['age'] ?? "",
+                    age: item['DOB'] ?? "",
                     gender: item['gender'] ?? "",
                     createdbyadmin: item['createdByAdmin'] ?? "",
                     adminame: adminprovider.admindetailedprofile.first["name"] ?? "",
@@ -490,7 +490,7 @@ class _AllPatientsPageState extends State<AllPatientsPage> {
                     email: item['email'] ?? "",
                     phonenumber: item['phone'] ?? 0,
                     dob: formatDate(item['DOB'] ?? ""),
-                    age: item['age'] ?? "",
+                    age: item['DOB'] ?? "",
                     gender: item['gender'] ?? "",
                     createdbyadmin: "",
                     adminame: "",
@@ -678,7 +678,7 @@ class PatientModel extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 16,
+                      width: 13,
                     ),
                     Expanded(child: Container(
                       decoration: BoxDecoration(
@@ -701,7 +701,7 @@ class PatientModel extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ), onPressed: onView))),
-                    SizedBox(width: 16,),
+                    SizedBox(width: 13,),
                     Expanded(child: Container(
                       decoration:  BoxDecoration(
                         gradient:isCreatedByAdmin != "" ? LinearGradient(colors: [

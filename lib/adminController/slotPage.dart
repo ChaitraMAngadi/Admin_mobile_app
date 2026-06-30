@@ -28,6 +28,8 @@ class _SlotPageState extends State<SlotPage> {
   late ScrollController _dateScrollController;
 
   late TextEditingController dateController;
+  bool _isBookingInProgress = false;
+  bool _isUpdatingTime = false; 
 
   String? newSelectedTime;
   final Map<int, String> durationToLabel = {
@@ -390,87 +392,174 @@ class _SlotPageState extends State<SlotPage> {
                                         ),
                                       ),
                                     ),
-                                    onPressed:hasBookedSlots? null: () async {
-                                      if (loginController.text.trim().isEmpty ||
-                                          logoutController.text.trim().isEmpty) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                              "Please select both Login and Logout times.",
-                                            ),
-                                            backgroundColor: Colors.redAccent,
-                                          ),
-                                        );
-                                        return;
-                                      }
+                                    // onPressed:hasBookedSlots? null: () async {
+                                    //   if (loginController.text.trim().isEmpty ||
+                                    //       logoutController.text.trim().isEmpty) {
+                                    //     ScaffoldMessenger.of(context).showSnackBar(
+                                    //       const SnackBar(
+                                    //         content: Text(
+                                    //           "Please select both Login and Logout times.",
+                                    //         ),
+                                    //         backgroundColor: Colors.redAccent,
+                                    //       ),
+                                    //     );
+                                    //     return;
+                                    //   }
                                   
-                                      // ✅ Parse both times to compare
-                                      final loginParts = loginController.text.split(
-                                        ":",
-                                      );
-                                      final logoutParts = logoutController.text.split(
-                                        ":",
-                                      );
+                                    //   // ✅ Parse both times to compare
+                                    //   final loginParts = loginController.text.split(
+                                    //     ":",
+                                    //   );
+                                    //   final logoutParts = logoutController.text.split(
+                                    //     ":",
+                                    //   );
                                   
-                                      if (loginParts.length < 2 ||
-                                          logoutParts.length < 2) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text("Invalid time format."),
-                                            backgroundColor: Colors.redAccent,
-                                          ),
-                                        );
-                                        return;
-                                      }
+                                    //   if (loginParts.length < 2 ||
+                                    //       logoutParts.length < 2) {
+                                    //     ScaffoldMessenger.of(context).showSnackBar(
+                                    //       const SnackBar(
+                                    //         content: Text("Invalid time format."),
+                                    //         backgroundColor: Colors.redAccent,
+                                    //       ),
+                                    //     );
+                                    //     return;
+                                    //   }
                                   
-                                      final loginTime = DateTime(
-                                        2024,
-                                        1,
-                                        1,
-                                        int.parse(loginParts[0]),
-                                        int.parse(loginParts[1]),
-                                      );
+                                    //   final loginTime = DateTime(
+                                    //     2024,
+                                    //     1,
+                                    //     1,
+                                    //     int.parse(loginParts[0]),
+                                    //     int.parse(loginParts[1]),
+                                    //   );
                                   
-                                      final logoutTime = DateTime(
-                                        2024,
-                                        1,
-                                        1,
-                                        int.parse(logoutParts[0]),
-                                        int.parse(logoutParts[1]),
-                                      );
+                                    //   final logoutTime = DateTime(
+                                    //     2024,
+                                    //     1,
+                                    //     1,
+                                    //     int.parse(logoutParts[0]),
+                                    //     int.parse(logoutParts[1]),
+                                    //   );
                                   
-                                      // ✅ Check condition: login must be earlier than logout
-                                      if (logoutTime.isBefore(loginTime) ||
-                                          logoutTime.isAtSameMomentAs(loginTime)) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                              "Logout time must be after Login time.",
-                                            ),
-                                            backgroundColor: Colors.redAccent,
-                                          ),
-                                        );
-                                        return;
-                                      }
-                                      // int duration = int.parse(durationController.text);
-                                      await p.updateDoctorTiming(
-                                        widget.patientId,
-                                        loginController.text.trim(),
-                                        logoutController.text.trim(),
-                                        int.parse(durationController.text.trim()),
-                                        selectedDate,
-                                        context,
-                                      );
+                                    //   // ✅ Check condition: login must be earlier than logout
+                                    //   if (logoutTime.isBefore(loginTime) ||
+                                    //       logoutTime.isAtSameMomentAs(loginTime)) {
+                                    //     ScaffoldMessenger.of(context).showSnackBar(
+                                    //       const SnackBar(
+                                    //         content: Text(
+                                    //           "Logout time must be after Login time.",
+                                    //         ),
+                                    //         backgroundColor: Colors.redAccent,
+                                    //       ),
+                                    //     );
+                                    //     return;
+                                    //   }
+                                    //   // int duration = int.parse(durationController.text);
+                                    //   await p.updateDoctorTiming(
+                                    //     widget.patientId,
+                                    //     loginController.text.trim(),
+                                    //     logoutController.text.trim(),
+                                    //     int.parse(durationController.text.trim()),
+                                    //     selectedDate,
+                                    //     context,
+                                    //   );
                                   
-                                      // Implement time change logic
-                                    },
-                                    child:  Text(
-                                      "Update Time",
-                                      style: TextStyle(
-                                        color:hasBookedSlots?Colors.grey.shade800: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                                    //   // Implement time change logic
+                                    // },
+                                    onPressed: (hasBookedSlots || _isUpdatingTime) // 👈 changed
+    ? null
+    : () async {
+        if (loginController.text.trim().isEmpty ||
+            logoutController.text.trim().isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Please select both Login and Logout times."),
+              backgroundColor: Colors.redAccent,
+            ),
+          );
+          return;
+        }
+
+        final loginParts = loginController.text.split(":");
+        final logoutParts = logoutController.text.split(":");
+
+        if (loginParts.length < 2 || logoutParts.length < 2) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Invalid time format."),
+              backgroundColor: Colors.redAccent,
+            ),
+          );
+          return;
+        }
+
+        final loginTime = DateTime(
+          2024, 1, 1,
+          int.parse(loginParts[0]),
+          int.parse(loginParts[1]),
+        );
+
+        final logoutTime = DateTime(
+          2024, 1, 1,
+          int.parse(logoutParts[0]),
+          int.parse(logoutParts[1]),
+        );
+
+        if (logoutTime.isBefore(loginTime) ||
+            logoutTime.isAtSameMomentAs(loginTime)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Logout time must be after Login time."),
+              backgroundColor: Colors.redAccent,
+            ),
+          );
+          return;
+        }
+
+        setState(() {
+          _isUpdatingTime = true; // 👈 changed
+        });
+
+        try {
+          await p.updateDoctorTiming(
+            widget.patientId,
+            loginController.text.trim(),
+            logoutController.text.trim(),
+            int.parse(durationController.text.trim()),
+            selectedDate,
+            context,
+          );
+        } finally {
+          if (mounted) {
+            setState(() {
+              _isUpdatingTime = false; // 👈 changed
+            });
+          }
+        }
+      },
+child: _isUpdatingTime // 👈 changed
+    ? const SizedBox(
+        height: 18,
+        width: 18,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: Colors.white,
+        ),
+      )
+    : Text(
+        "Update Time",
+        style: TextStyle(
+          color: hasBookedSlots ? Colors.grey.shade800 : Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+                                    // child:  Text(
+                                    //   "Update Time",
+                                    //   style: TextStyle(
+                                    //     color:hasBookedSlots?Colors.grey.shade800: Colors.white,
+                                    //     fontWeight: FontWeight.bold,
+                                    //   ),
+                                    // ),
                                   ),
                                 ),
                                 if(hasBookedSlots)
@@ -763,14 +852,178 @@ String formatDate(String date) {
     return DateFormat('dd/MM/yyyy').format(parsedDate);
   }
 
-  /// ✅ BOOK POPUP
-  void showBookPopup(SlotModel slot, AdminPageProvider p) {
-    TextEditingController name = TextEditingController();
-    TextEditingController mobile = TextEditingController();
+  // /// ✅ BOOK POPUP
+  // void showBookPopup(SlotModel slot, AdminPageProvider p) {
+  //   TextEditingController name = TextEditingController();
+  //   TextEditingController mobile = TextEditingController();
 
-    showDialog(
-      context: context,
-      builder: (_) => Dialog(
+  //   showDialog(
+  //     context: context,
+  //     builder: (_) => Dialog(
+  //       backgroundColor: Colors.white,
+  //       insetPadding: EdgeInsets.all(16),
+  //       child: Form(
+  //         key: formkey,
+  //         child: Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+  //           child: SingleChildScrollView(
+  //             child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: [
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     const Text(
+                  //       "Book Appointment",
+                  //       style: TextStyle(
+                  //         fontSize: 18,
+                  //         fontWeight: FontWeight.bold,
+                  //         color: AppColors.primaryDark
+                  //       ),
+                  //     ),
+                  //     IconButton(
+                  //       onPressed: () => Navigator.pop(context),
+                  //       icon: Icon(Icons.close,
+                  //       color: AppColors.primaryDark,),
+                  //     ),
+                  //   ],
+                  // ),
+                  // const SizedBox(height: 12),
+                  // const Text(
+                  //   "Name*",
+                  //   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  // ),
+                  // const SizedBox(height: 4),
+                  // TextFormField(
+                  //   controller: name,
+                  //   validator: (value) {
+                  //     if (value == null || value.isEmpty) {
+                  //       return 'Please enter Name';
+                  //     }
+                  //     return null; // Return null if validation is successful
+                  //   },
+                  //   decoration: const InputDecoration(
+                  //     border: OutlineInputBorder(),
+                  //     hintText: 'Enter Name',
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 6),
+                  // const Text(
+                  //   "Mobile Number*",
+                  //   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  // ),
+                  // const SizedBox(height: 4),
+                  // TextFormField(
+                  //   controller: mobile,
+                  //  inputFormatters: <TextInputFormatter>[
+                  //       LengthLimitingTextInputFormatter(10),
+                  //       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  //     ],
+                  //   decoration: const InputDecoration(
+                  //     border: OutlineInputBorder(),
+                  //     hintText: 'Enter Mobile',
+                  //   ),
+                  //   validator: (value) {
+                  //     if (value!.length != 10) {
+                  //         return 'Phone number must be exactly 10 digits';
+                  //       }
+                  //       if (!RegExp(r'^[6-9]\d{9}$').hasMatch(value)) {
+                  //         return 'Enter a valid phone number';
+                  //       }
+                  //       return null; // Return null if validation is successful
+                  //   },
+                  // ),
+                  // SizedBox(height: 10),
+                  // Container(
+                  //   width: double.infinity,
+                  //   padding: EdgeInsets.all(16),
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.blue.shade50,
+                  //     borderRadius: const BorderRadius.all(Radius.circular(16)),
+                  //   ),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       const Text(
+                  //         'Selected Slot: ',
+                  //         style: TextStyle(
+                  //           fontWeight: FontWeight.bold,
+                  //           fontSize: 15,
+                  //         ),
+                  //       ),
+                  //       const SizedBox(height: 4),
+                  //       Text(
+                  //         "${slot.startTime}-${slot.endTime}",
+                  //         style: const TextStyle(fontSize: 15),
+                  //       ),
+                  //       const SizedBox(height: 4),
+                  //       Text(
+                  //         "Date: ${formatDate(selectedDate.toString())}",
+                  //         style: const TextStyle(fontSize: 15),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+  //                 SizedBox(height: 16),
+  //                 Container(
+  //                   padding: EdgeInsets.symmetric(vertical: 6),
+  //                   decoration: BoxDecoration(
+  //                     borderRadius: BorderRadius.all(Radius.circular(12)),
+  //                     gradient: AppColors.primaryGradient,
+  //                   ),
+  //                   width: double.infinity,
+  //                   child: ElevatedButton(
+  //                     style: ElevatedButton.styleFrom(
+  //                       backgroundColor: Colors.transparent,
+  //                       shadowColor: Colors.transparent,
+  //                       shape: RoundedRectangleBorder(
+  //                         borderRadius: BorderRadius.circular(8),
+  //                       ),
+  //                     ),
+  //                     onPressed: () async {
+  //                       if (formkey.currentState!.validate()) {
+  //                         await p.bookSlot(
+  //                           widget.patientId,
+  //                           slot,
+  //                           selectedDate,
+  //                           name.text,
+  //                           mobile.text,
+  //                           context,
+  //                         );
+  //                         Navigator.pop(context);
+  //                         p.loadByDate(selectedDate, widget.patientId, context);
+  //                       }
+  //                     },
+  //                     child: const Text(
+  //                       "Confirm Booking",
+  //                       style: TextStyle(
+  //                         fontWeight: FontWeight.bold,
+  //                         color: Colors.white,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 const SizedBox(height: 10),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  void showBookPopup(SlotModel slot, AdminPageProvider p) {
+  TextEditingController name = TextEditingController();
+  TextEditingController mobile = TextEditingController();
+  bool isSubmitting = false; // 👈 local flag for this dialog
+
+  showDialog(
+    context: context,
+    barrierDismissible: !isSubmitting,
+    builder: (_) => StatefulBuilder(
+      builder: (context, setDialogState) => Dialog(
         backgroundColor: Colors.white,
         insetPadding: EdgeInsets.all(16),
         child: Form(
@@ -782,7 +1035,8 @@ String formatDate(String date) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
+                  // ... Name field, Mobile field, Selected Slot container same as before ...
+Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
@@ -892,27 +1146,56 @@ String formatDate(String date) {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      onPressed: () async {
-                        if (formkey.currentState!.validate()) {
-                          await p.bookSlot(
-                            widget.patientId,
-                            slot,
-                            selectedDate,
-                            name.text,
-                            mobile.text,
-                            context,
-                          );
-                          Navigator.pop(context);
-                          p.loadByDate(selectedDate, widget.patientId, context);
-                        }
-                      },
-                      child: const Text(
-                        "Confirm Booking",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
+                      onPressed: isSubmitting
+                          ? null // 👈 disable while booking in progress
+                          : () async {
+                              if (formkey.currentState!.validate()) {
+                                setDialogState(() {
+                                  isSubmitting = true; // 👈 lock immediately
+                                });
+
+                                try {
+                                  await p.bookSlot(
+                                    widget.patientId,
+                                    slot,
+                                    selectedDate,
+                                    name.text,
+                                    mobile.text,
+                                    context,
+                                  );
+
+                                  if (Navigator.canPop(context)) {
+                                    Navigator.pop(context);
+                                  }
+
+                                  await p.loadByDate(
+                                    selectedDate,
+                                    widget.patientId,
+                                    context,
+                                  );
+                                } catch (e) {
+                                  setDialogState(() {
+                                    isSubmitting = false; // unlock on error
+                                  });
+                                }
+                              }
+                            },
+                      child: isSubmitting
+                          ? const SizedBox(
+                              height: 18,
+                              width: 18,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text(
+                              "Confirm Booking",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -922,8 +1205,9 @@ String formatDate(String date) {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   /// ✅ DELETE POPUP
   void showDeletePopup(SlotModel slot, AdminPageProvider p) {

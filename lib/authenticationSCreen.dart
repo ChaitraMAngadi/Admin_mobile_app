@@ -32,6 +32,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   int _start = 100; // Set your countdown time in seconds
   bool _isButtonDisabled = true;
   final SecureStorage secureStorage = SecureStorage();
+  bool _isVerifying = false;
 
   @override
   void initState() {
@@ -176,45 +177,96 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     const SizedBox(
                       height: 10,
                     ),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.all(Radius.circular(12)),
+                    //     gradient: AppColors.primaryGradient,
+                    //   ),
+                    //   width: double.infinity,
+                    //   child: FilledButton(
+                    //       style: ButtonStyle(
+                    //         padding: WidgetStateProperty.all(
+                    //             const EdgeInsets.symmetric(
+                    //           vertical: 14,
+                    //         )),
+                    //         backgroundColor: WidgetStateProperty.all(
+                    //             Colors.transparent),
+                    //             shadowColor: WidgetStatePropertyAll(Colors.transparent),
+                    //         shape: WidgetStateProperty.all(
+                    //             RoundedRectangleBorder(
+                    //                 borderRadius: BorderRadius.circular(23.0))),
+                    //       ),
+                    //       onPressed: () async {
+                    //         // bool isloggedin = 
+                    //         await authprovider.verifyphoneOtp(
+                    //             widget.email, otpcontroller.text, context);
+
+                    //             Constants.role = await secureStorage.readSecureData('role') ?? '';
+
+                    //         // isloggedin
+                    //         //     ? Constants.role =='doctor'? context.router.popAndPush(HomeRoute()):MaterialPageRoute(builder: (context) => const AdminDashboardPage())
+                    //             // context.router.popAndPush(
+                    //             //     const AuthenticationRoute())
+                    //             // : null;
+                    //         // context.router.popAndPush(HomeRoute());
+                    //       },
+                    //       child: const Text(
+                    //         'Continue',
+                    //         style: TextStyle(
+                    //             fontSize: 16, fontWeight: FontWeight.bold),
+                    //       )),
+                    // ),
+
                     Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                        gradient: AppColors.primaryGradient,
-                      ),
-                      width: double.infinity,
-                      child: FilledButton(
-                          style: ButtonStyle(
-                            padding: WidgetStateProperty.all(
-                                const EdgeInsets.symmetric(
-                              vertical: 14,
-                            )),
-                            backgroundColor: WidgetStateProperty.all(
-                                Colors.transparent),
-                                shadowColor: WidgetStatePropertyAll(Colors.transparent),
-                            shape: WidgetStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(23.0))),
-                          ),
-                          onPressed: () async {
-                            // bool isloggedin = 
-                            await authprovider.verifyphoneOtp(
-                                widget.email, otpcontroller.text, context);
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.all(Radius.circular(12)),
+    gradient: AppColors.primaryGradient,
+  ),
+  width: double.infinity,
+  child: FilledButton(
+      style: ButtonStyle(
+        padding: WidgetStateProperty.all(
+            const EdgeInsets.symmetric(vertical: 14)),
+        backgroundColor: WidgetStateProperty.all(Colors.transparent),
+        shadowColor: WidgetStatePropertyAll(Colors.transparent),
+        shape: WidgetStateProperty.all(RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(23.0))),
+      ),
+      onPressed: _isVerifying
+          ? null
+          : () async {
+              setState(() {
+                _isVerifying = true;
+              });
 
-                                Constants.role = await secureStorage.readSecureData('role') ?? '';
+              try {
+                await authprovider.verifyphoneOtp(
+                    widget.email, otpcontroller.text, context);
 
-                            // isloggedin
-                            //     ? Constants.role =='doctor'? context.router.popAndPush(HomeRoute()):MaterialPageRoute(builder: (context) => const AdminDashboardPage())
-                                // context.router.popAndPush(
-                                //     const AuthenticationRoute())
-                                // : null;
-                            // context.router.popAndPush(HomeRoute());
-                          },
-                          child: const Text(
-                            'Continue',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          )),
-                    ),
+                Constants.role =
+                    await secureStorage.readSecureData('role') ?? '';
+              } finally {
+                if (mounted) {
+                  setState(() {
+                    _isVerifying = false;
+                  });
+                }
+              }
+            },
+      child: _isVerifying
+          ? const SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Colors.white,
+              ),
+            )
+          : const Text(
+              'Continue',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            )),
+),
                     const SizedBox(
                       height: 10,
                     ),

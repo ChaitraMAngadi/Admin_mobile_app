@@ -207,6 +207,7 @@ class _DoctorDetailsPageState extends State<DoctorDetailsPage> {
     AdminPageProvider adminpageprovider = context.read<AdminPageProvider>();
 
     await Future.delayed(Duration(seconds: 2));
+    adminpageprovider.invalidateCache(key: adminpageprovider.kProfile);
     Constants.token = await secureStorage.readSecureData('token') ?? '';
     setState(() {
       fetchalldoctorsdetails = adminpageprovider.getalldoctorsdetails(context);

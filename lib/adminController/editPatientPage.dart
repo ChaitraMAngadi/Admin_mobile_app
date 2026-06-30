@@ -84,6 +84,7 @@ class _EditPatientAdminPageState extends State<EditPatientAdminPage> {
         formatedJoiDate = data["DOB"] ?? "";
         _selectedGender = data["gender"];
         _emailController.text = data["email"] ?? "";
+        _ageController.text = calculateAge(DateTime.parse(data["DOB"] ?? ""));
         // _ageController.text = data["age"] ?? "";
         _phoneController.text = (data["phone"] ?? "").toString();
       }
@@ -341,7 +342,7 @@ class _EditPatientAdminPageState extends State<EditPatientAdminPage> {
                                               DateFormat('yyyy-MM-dd')
                                                   .format(pickedDate);
 
-                                          String age = calculateAge(pickedDate);
+                                         String age = calculateAge(pickedDate);
                                           _ageController.text = age;
                                         } else {}
                                       },
@@ -394,15 +395,15 @@ class _EditPatientAdminPageState extends State<EditPatientAdminPage> {
                                 );
                               }).toList(),
                             ),
-                            // const SizedBox(height: 16),
-                            // const Text(
-                            //   'Age of the patient*',
-                            //   style: TextStyle(
-                            //     fontSize: 16,
-                            //     fontWeight: FontWeight.bold,
-                            //   ),
-                            // ),
-                            // const SizedBox(height: 8),
+                            const SizedBox(height: 16),
+                            const Text(
+                              'Age of the patient*',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
                             // TextFormField(
                             //   readOnly: true,
                             //   controller: _ageController,
@@ -411,6 +412,15 @@ class _EditPatientAdminPageState extends State<EditPatientAdminPage> {
                             //     hintText: 'Enter Age',
                             //   ),
                             // ),
+                            TextFormField(
+                              readOnly: true,
+                              controller: _ageController,
+                              decoration: InputDecoration(
+                                border: const OutlineInputBorder(),
+                                hintText: _ageController.text,
+                                // hintStyle: TextStyle(color: Colors.black)
+                              ),
+                            ),
                             const SizedBox(height: 32),
                             Container(
                               width: double.infinity,

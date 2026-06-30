@@ -1353,6 +1353,8 @@ class _RegisterVisitModelState extends State<RegisterVisitModel> {
                   items: widget.alldoctors,
                   itemAsString: (doc) => "${doc['name']} | ${doc['userid']}",
                   selectedItem: selectedConsultingDoctor,
+                   autoValidateMode:
+                                  AutovalidateMode.onUserInteraction,
                    popupProps: PopupProps.menu(
     showSearchBox: true,
     constraints: BoxConstraints(
@@ -1364,11 +1366,13 @@ class _RegisterVisitModelState extends State<RegisterVisitModel> {
   ),
                   // popupProps: const PopupProps.menu(showSearchBox: true),
                   dropdownDecoratorProps: DropDownDecoratorProps(
+                  
                     dropdownSearchDecoration: InputDecoration(
                       hintText: "Select Consulting Doctor",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                      
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: const BorderSide(color: Color(0xFF0857C0)),
@@ -1416,6 +1420,7 @@ class _RegisterVisitModelState extends State<RegisterVisitModel> {
                         );
 
                         await adminprovider.getpatientoutvisits(widget.patientId, context);
+                        await adminprovider.getPatientsByPageWithSearch(1,'',context);
                       }
 
                       // context.router.pop();
