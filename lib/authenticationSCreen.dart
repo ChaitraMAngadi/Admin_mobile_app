@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:admin_mobile_application/provider/authProvider.dart';
+import 'package:admin_mobile_application/routes/app_router.dart';
 import 'package:admin_mobile_application/services/constants.dart';
 import 'package:admin_mobile_application/services/secureStorage.dart';
 import 'package:admin_mobile_application/theme/app_colors.dart';
@@ -95,7 +96,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              context.router.replaceAll([LoginRoute()]);
             },
             icon: Icon(Icons.arrow_back)),
       ),

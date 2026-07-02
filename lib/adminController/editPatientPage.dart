@@ -222,7 +222,7 @@ class _EditPatientAdminPageState extends State<EditPatientAdminPage> {
                                   AutovalidateMode.onUserInteraction,
                               controller: _nameController,
                               inputFormatters: [
-                                LengthLimitingTextInputFormatter(20),
+                                LengthLimitingTextInputFormatter(50),
                                 FilteringTextInputFormatter.allow(
                                   RegExp(r'[a-zA-Z0-9 ]'),
                                 )

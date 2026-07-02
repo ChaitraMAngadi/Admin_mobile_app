@@ -248,7 +248,7 @@ class _TodaysOutvisitsPageState extends State<TodaysOutvisitsPage> {
                                   )
                                 : SizedBox(
                                     height: MediaQuery.of(context).size.height *
-                                        0.76,
+                                        0.73,
                                     child: ListView.builder(
                                       itemCount: adminPageProvider
                                           .filteredvisits.length,
@@ -298,7 +298,7 @@ class _TodaysOutvisitsPageState extends State<TodaysOutvisitsPage> {
                                                   return VisitViewModel(
                                                     name: item['name'],
                                                     id: item['patientId'],
-                                                    age: item['age'],
+                                                    age: item['DOB'],
                                                     gender: item['gender'],
                                                     phone: item['phone'].toString(),
                                                     email: item['email'],

@@ -793,7 +793,7 @@ Future<void> addoutvisit(
         requestBody["heart_rate"] = heartrate;
       }
       if (temperature.isNotEmpty) {
-        requestBody["temparature"] = temperature;
+        requestBody["temperature"] = temperature;
       }
       print(requestBody);
 

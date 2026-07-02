@@ -882,7 +882,7 @@ class ViewAdminModel extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         const Text(
-                          "Admin / Doctor Details",
+                          "Doctor Details",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,

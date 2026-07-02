@@ -189,6 +189,7 @@ Widget build(BuildContext context) {
                             Constants.token =
                                 await secureStorage.readSecureData('token') ?? '';
                                 await secureStorage.readSecureData('phone') ?? '';
+                                adminPageProvider.invalidateCache();
                     
                             context.router.replaceAll([LoginRoute()]);
                           },
